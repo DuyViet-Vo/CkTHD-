@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.1" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/ic_carbon_settings_adjust.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/ic_delete.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_buton_huy.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_buton_luu.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_button_login.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_dialog.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_sua.xml" value="0.1" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_thongtin.xml" value="0.18177083333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shape_xoa.xml" value="0.1" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shapecustombuton.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shapecustombutonlogin.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/drawable/shapetron.xml" value="0.19583333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_chi_tiet.xml" value="0.16666666666666666" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_danh_nhap.xml" value="0.1796875" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_qlkhoa.xml" value="0.3333333333333333" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_qllop.xml" value="0.22" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_qlnganh.xml" value="0.17708333333333334" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/activity_them_sua.xml" value="0.1873479318734793" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/dangnhap.xml" value="0.22" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/layou_dialog_feeback.xml" value="0.16666666666666666" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/list_khoa.xml" value="0.4466666666666667" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/list_lop.xml" value="0.1" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/list_nganh.xml" value="0.17708333333333334" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/list_sinh_vien.xml" value="0.5" />
+        <entry key="..\:/Ky121/CKLTDD/app/src/main/res/layout/themsinhvien.xml" value="0.12" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
