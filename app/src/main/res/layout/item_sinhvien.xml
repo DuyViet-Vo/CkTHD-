@@ -11,12 +11,19 @@
     android:paddingHorizontal="20dp"
     android:paddingVertical="14dp">
 
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/duaaaringgg"/>
+
     <ImageView
         android:id="@+id/imagehinh"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentStart="true"
-        android:src="@drawable/anhnguoidung" />
+        android:layout_alignParentStart="true" />
+
 
    <LinearLayout
        android:layout_width="wrap_content"
@@ -32,7 +39,7 @@
            android:fontFamily="@font/bold"
            android:text="Đặng Văn Thiện"
            android:textColor="#3E5370"
-           android:textSize="20dp"/>
+           android:textSize="17dp"/>
 
        <TextView
            android:id="@+id/txtmasv"
@@ -41,7 +48,7 @@
            android:fontFamily="@font/semibold"
            android:text="1911505310261"
            android:textColor="#A1B5D8"
-           android:textSize="15dp"
+           android:textSize="14dp"
                   />
    </LinearLayout>
 
