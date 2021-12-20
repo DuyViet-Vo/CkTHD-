@@ -11,6 +11,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -25,6 +27,14 @@ public class sinhvienAdapter extends BaseAdapter {
     public sinhvienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
         this.context = context;
         this.layout = layout;
+        this.sinhVienList = sinhVienList;
+    }
+
+    public List<SinhVien> getSinhVienList() {
+        return sinhVienList;
+    }
+
+    public void setSinhVienList(List<SinhVien> sinhVienList) {
         this.sinhVienList = sinhVienList;
     }
 
@@ -56,33 +66,7 @@ public class sinhvienAdapter extends BaseAdapter {
         txttensv.setText(sinhvien.getHoTen());
         txtmasinhvien.setText(sinhvien.getId());
 
-        class LoadImg extends AsyncTask<String, Void, Bitmap> {
-            Bitmap bitmapImg = null;
-
-            @Override
-            protected Bitmap doInBackground(String... strings) {
-
-                try {
-                    URL url = new URL(strings[0]);
-                    InputStream inputStream = url.openConnection().getInputStream();
-                    bitmapImg = BitmapFactory.decodeStream(inputStream);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return bitmapImg;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                super.onPostExecute(bitmap);
-                imagehinhcanhan.setImageBitmap(bitmap);
-            }
-        }
-
-        new LoadImg().execute("https://app-quanlysv.herokuapp.com/" + sinhvien.getAnhDaiDien());
+        Glide.with(context).load("https://app-quanlysv.herokuapp.com/" + sinhvien.getAnhDaiDien()).into(imagehinhcanhan);
 
         return convertView;
     }
