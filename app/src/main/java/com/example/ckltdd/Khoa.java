@@ -4,6 +4,7 @@ public class Khoa {
     private int id;
     private String tenKhoa;
 
+
     public String getTenkhoa() {
         return tenKhoa;
     }

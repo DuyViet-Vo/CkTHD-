@@ -2,6 +2,7 @@ package com.example.ckltdd;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -55,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        LoadDSKhoa();
+
         LoadStudents();
+
     }
 
     private void LoadDSKhoa() {
@@ -65,11 +67,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<Khoa>> call, Response<List<Khoa>> response) {
                 List<Khoa> list = response.body();
+                list.add(0, new Khoa( 0,"Tất cả"));
                 System.out.println(list.size());
                 for (Khoa khoa : list) {
                     System.out.println(khoa);
                 }
                 khoaAdapter_r = new KhoaAdapter_R(list);
+                khoaAdapter_r.setmAPIService(mAPIService);
+                khoaAdapter_r.setListViewsinhvien(listViewsinhvien);
+                khoaAdapter_r.setSvAdapter(adapter);
                 rv_khoa = (RecyclerView) findViewById(R.id.list_khoa);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 rv_khoa.setLayoutManager(linearLayoutManager);
@@ -98,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 adapter = new sinhvienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
                 listViewsinhvien.setAdapter(adapter);
                 listViewsinhvien.setTranscriptMode(0);
+                LoadDSKhoa();
             }
 
             @Override
