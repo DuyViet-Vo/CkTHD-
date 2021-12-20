@@ -1,6 +1,9 @@
 package com.example.ckltdd;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,22 +11,26 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class sinhvienAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private List<sinhvien> sinhvienList;
+    private List<SinhVien> sinhVienList;
 
-    public sinhvienAdapter(Context context, int layout, List<sinhvien> sinhvienList) {
+    public sinhvienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
         this.context = context;
         this.layout = layout;
-        this.sinhvienList = sinhvienList;
+        this.sinhVienList = sinhVienList;
     }
 
     @Override
     public int getCount() {
-        return sinhvienList.size();
+        return sinhVienList.size();
     }
 
     @Override
@@ -45,11 +52,40 @@ public class sinhvienAdapter extends BaseAdapter {
         TextView txtmasinhvien=(TextView) convertView.findViewById(R.id.txtmasv);
         ImageView imagehinhcanhan = (ImageView) convertView.findViewById(R.id.imagehinh);
         //gán giá trị
-        sinhvien sinhvien = sinhvienList.get(position);
-        txttensv.setText(sinhvien.getTensv());
-        txtmasinhvien.setText(sinhvien.getMasv());
-        imagehinhcanhan.setImageResource(sinhvien.getHinh());
+        SinhVien sinhvien = sinhVienList.get(position);
+        txttensv.setText(sinhvien.getHoTen());
+        txtmasinhvien.setText(sinhvien.getId());
+
+        class LoadImg extends AsyncTask<String, Void, Bitmap> {
+            Bitmap bitmapImg = null;
+
+            @Override
+            protected Bitmap doInBackground(String... strings) {
+
+                try {
+                    URL url = new URL(strings[0]);
+                    InputStream inputStream = url.openConnection().getInputStream();
+                    bitmapImg = BitmapFactory.decodeStream(inputStream);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return bitmapImg;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                imagehinhcanhan.setImageBitmap(bitmap);
+            }
+        }
+
+        new LoadImg().execute("https://app-quanlysv.herokuapp.com/" + sinhvien.getAnhDaiDien());
 
         return convertView;
     }
+
+
 }

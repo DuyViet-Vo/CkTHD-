@@ -1,46 +1,49 @@
 package com.example.ckltdd;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
+import com.example.ckltdd.Retrofit2.APIServices;
+import com.example.ckltdd.Retrofit2.APIUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
     ListView listViewsinhvien;
-    ArrayList<sinhvien> sinhvienArrayList;
+    List<SinhVien> sinhVienArrayList;
     sinhvienAdapter adapter;
     Spinner danhsachNganh,danhsachKhoa;
     Button btnHuy,btnLoc;
     FloatingActionButton fab_them;
-    ListView listViewSV;
+    APIServices mAPIService;
+
+    KhoaAdapter_R khoaAdapter_r;
+    RecyclerView rv_khoa;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setColorStatusBar();
-        //dialog
-
+        mAPIService = APIUtils.getAPIService();
 
         //them
         fab_them = (FloatingActionButton) findViewById(R.id.fAddBtn) ;
@@ -51,34 +54,57 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-////intenr listview bị lỗi
-//        listViewSV = (ListView)findViewById(R.id.lvsinhvien) ;
-//        listViewSV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent();
-//                intent.setClass(MainActivity.this,ChiTietActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-        AnhXa();
-        adapter = new sinhvienAdapter(this,R.layout.list_sinh_vien,sinhvienArrayList);
-        listViewsinhvien.setAdapter(adapter);
-        listViewsinhvien.setTranscriptMode(0);
+
+        LoadDSKhoa();
+        LoadStudents();
     }
 
-    private void AnhXa(){
+    private void LoadDSKhoa() {
+        Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
+        call.enqueue(new Callback<List<Khoa>>() {
+            @Override
+            public void onResponse(Call<List<Khoa>> call, Response<List<Khoa>> response) {
+                List<Khoa> list = response.body();
+                System.out.println(list.size());
+                for (Khoa khoa : list) {
+                    System.out.println(khoa);
+                }
+                khoaAdapter_r = new KhoaAdapter_R(list);
+                rv_khoa = (RecyclerView) findViewById(R.id.list_khoa);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
+                rv_khoa.setLayoutManager(linearLayoutManager);
+                rv_khoa.setAdapter(khoaAdapter_r);
+            }
+
+            @Override
+            public void onFailure(Call<List<Khoa>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(t.getMessage());
+            }
+        });
+
+    }
+
+    private void LoadStudents(){
         listViewsinhvien = (ListView) findViewById(R.id.lvsinhvien);
-        sinhvienArrayList   = new ArrayList<>();
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261", ));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+        sinhVienArrayList = new ArrayList<>();
+
+        Call<List<SinhVien>> call = mAPIService.LoadStudents();
+        call.enqueue(new Callback<List<SinhVien>>() {
+            @Override
+            public void onResponse(Call<List<SinhVien>> call, Response<List<SinhVien>> response) {
+                sinhVienArrayList = response.body();
+
+                adapter = new sinhvienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
+                listViewsinhvien.setAdapter(adapter);
+                listViewsinhvien.setTranscriptMode(0);
+            }
+
+            @Override
+            public void onFailure(Call<List<SinhVien>> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
     }
 
     private void setColorStatusBar() {
