@@ -70,15 +70,15 @@ public class MainActivity extends AppCompatActivity {
     private void AnhXa(){
         listViewsinhvien = (ListView) findViewById(R.id.lvsinhvien);
         sinhvienArrayList   = new ArrayList<>();
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
-        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261", ));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
+//        sinhvienArrayList.add(new sinhvien("Đặng Văn Thiện","1911505310261",R.drawable.anhnguoidung));
     }
 
     private void setColorStatusBar() {
@@ -86,5 +86,9 @@ public class MainActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
+    }
+
+    private void getStudents() {
+
     }
 }
