@@ -35,13 +35,6 @@ Spinner danhsachnganh;
     }
     private void AnhXa(){
         listViewLop = (ListView) findViewById(R.id.lvlop);
-        LopArrayList = new ArrayList<>();
-        LopArrayList.add(new Lop("18T1"));
-        LopArrayList.add(new Lop("18T2"));
-        LopArrayList.add(new Lop("18T3"));
-        LopArrayList.add(new Lop("18T4"));
-        LopArrayList.add(new Lop("19T1"));
-        LopArrayList.add(new Lop("19T2"));
     }
 
 }

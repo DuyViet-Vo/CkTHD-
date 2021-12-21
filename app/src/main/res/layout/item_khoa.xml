@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
@@ -19,10 +20,10 @@
             android:layout_height="match_parent"
             android:paddingBottom="6dp"
             android:layout_centerHorizontal="true"
-            android:background="@color/white"
             android:fontFamily="@font/bold"
             android:paddingHorizontal="22dp"
             android:text="Điện - điện tử"
+            android:background="@drawable/ripple_btn"
             android:maxLines="1"
             android:ellipsize="end"
             android:textAllCaps="false"
