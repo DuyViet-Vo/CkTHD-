@@ -33,4 +33,18 @@ public interface APIServices {
 
     @POST("khoa/sinhvien")
     Call<List<SinhVien>> LoadStudentsByKhoaId(@Query("maKhoa") int maKhoa);
+
+    @POST("khoa/nganh")
+    Call<ArrayList<Nganh>> LoadDSNganhByKhoaId(@Query("maKhoa") int maKhoa);
+
+    @POST("khoa/lop")
+    Call<ArrayList<Lop>> LoadDSLopByKhoaId(@Query("maKhoa") int maKhoa);
+
+    @POST("lop/sinhvien")
+    Call<List<SinhVien>> LoadStudentsByClassId(@Query("maKhoa") int maKhoa, @Query("maNganh") int maNganh, @Query("maLop") int maLop);
+
+    @POST("nganh/lop")
+    Call<ArrayList<Lop>> LoadDSLopByNganhId(@Query("maNganh") int maNganh);
+
+
 }

@@ -90,12 +90,24 @@
                 android:src="@drawable/ic_carbon_settings_adjust" />
 
             <pl.droidsonroids.gif.GifImageView
+                android:id="@+id/sv_load"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_below="@id/txtlop"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="100dp"
                 android:src="@drawable/duaaaringgg" />
+
+            <TextView
+                android:id="@+id/sv_0"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_below="@id/sv_load"
+                android:text="Không có sinh viên nào!"
+                android:textSize="20sp"
+                android:fontFamily="@font/semibold"
+                android:textColor="@color/c_374D6B"
+                android:layout_centerHorizontal="true"/>
 
             <ListView
                 android:id="@+id/lvsinhvien"

@@ -18,8 +18,10 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
@@ -33,6 +35,7 @@ import android.widget.ArrayAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +43,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
     ListView listViewsinhvien;
     List<SinhVien> sinhVienArrayList;
-    sinhvienAdapter adapter;
+    sinhvienAdapter svAdapter;
     Spinner danhsachNganh,danhsachKhoa;
     Button btnHuy;
     ImageButton button_loc;
@@ -52,12 +55,19 @@ public class MainActivity extends AppCompatActivity {
 
     Dialog locDialog;
 
+    AutoCompleteTextView lopSpinner, nganhSpinner;
+    HandleLoadEmtpy handleLoadEmtpy;
+
+    public static int khoaId = 0, nganhId = 0, lopId = 0;
+    public static String nganhLoc, lopLoc;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setColorStatusBar();
         mAPIService = APIUtils.getAPIService();
+        handleLoadEmtpy = new HandleLoadEmtpy(findViewById(R.id.sv_load), findViewById(R.id.lvsinhvien),findViewById(R.id.sv_0));
 
         //them
         fab_them = (FloatingActionButton) findViewById(R.id.fAddBtn) ;
@@ -93,13 +103,64 @@ public class MainActivity extends AppCompatActivity {
 
         locDialog.show();
 
-        AutoCompleteTextView nganh = locDialog.findViewById(R.id.nganhSpinner);
-        AutoCompleteTextView lop = locDialog.findViewById(R.id.lopSpinner);
-        LoadDSNganh(nganh);
-        LoadDSLop(lop);
+        nganhSpinner = locDialog.findViewById(R.id.nganhSpinner);
+        lopSpinner = locDialog.findViewById(R.id.lopSpinner);
+
+        nganhSpinner.setText(nganhLoc);
+        lopSpinner.setText(lopLoc);
+
+        LoadDSNganh(nganhSpinner);
+        LoadDSLop(lopSpinner);
+
+        Button huyBtn = locDialog.findViewById(R.id.btnHuy),
+                locBtn = locDialog.findViewById(R.id.btnLoc);
+
+        huyBtn.setOnClickListener(view -> {
+            locDialog.cancel();
+        });
+
+        locBtn.setOnClickListener(view -> {
+
+            LoadStudentsByClassId(khoaId, nganhId, lopId);
+            locDialog.cancel();
+        });
+    }
+
+    private void LoadStudentsByClassId(int khoaId, int nganhId, int lopId) {
+        handleLoadEmtpy.empty(1);
+        handleLoadEmtpy.HandleLoadAnimation(true);
+        Call<List<SinhVien>> call = mAPIService.LoadStudentsByClassId(khoaId, nganhId, lopId);
+        call.enqueue(new Callback<List<SinhVien>>() {
+            @Override
+            public void onResponse(Call<List<SinhVien>> call, Response<List<SinhVien>> response) {
+                List<SinhVien> list = response.body();
+                svAdapter.setSinhVienList(list);
+                svAdapter.notifyDataSetChanged();
+                handleLoadEmtpy.HandleLoadAnimation(false);
+                handleLoadEmtpy.empty(list.size());
+
+                System.out.println(khoaId + "__" +nganhId + "__" +lopId);
+                System.out.println(list.size());
+            }
+
+            @Override
+            public void onFailure(Call<List<SinhVien>> call, Throwable t) {
+
+            }
+        });
     }
 
     private void LoadDSLop(AutoCompleteTextView spinner) {
+        if(nganhId != 0) {
+            LoadDSLopByNganhId(nganhId);
+            return;
+        }
+
+        if (khoaId != 0) {
+            LoadDSLopByKhoaId(khoaId);
+            return;
+        }
+
         Call<ArrayList<Lop>> call = mAPIService.LoadDSLop();
         call.enqueue(new Callback<ArrayList<Lop>>() {
             @Override
@@ -107,19 +168,12 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<Lop> list = response.body();
                 list.add(0, new Lop( 0,"Tất cả"));
 
-                ArrayAdapter<Lop> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item_boloc, list);
-                spinner.setAdapter(arrayAdapter);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        Lop n = (Lop) adapterView.getItemAtPosition(i);
-                        Toast.makeText(adapterView.getContext(), n.getId() + n.getTenLop(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
+                ArrayAdapter<Lop> lopAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item_boloc, list);
+                spinner.setAdapter(lopAdapter);
+                spinner.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Lop lop = (Lop) adapterView.getItemAtPosition(i);
+                    lopId = lop.getId();
+                    lopLoc = lop.getTenLop();
                 });
             }
 
@@ -130,7 +184,62 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void LoadDSLopByKhoaId(int khoaId) {
+        Call<ArrayList<Lop>> call = mAPIService.LoadDSLopByKhoaId(khoaId);
+        call.enqueue(new Callback<ArrayList<Lop>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Lop>> call, Response<ArrayList<Lop>> response) {
+                ArrayList<Lop> list = response.body();
+                if(list.size() == 0) lopSpinner.setText("");
+                else list.add(0, new Lop( 0,"Tất cả"));
+
+                ArrayAdapter<Lop> lopAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item_boloc, list);
+                lopSpinner.setAdapter(lopAdapter);
+                lopSpinner.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Lop lop = (Lop) adapterView.getItemAtPosition(i);
+                    lopId = lop.getId();
+                    lopLoc = lop.getTenLop();
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Lop>> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
+    private void LoadDSLopByNganhId(int id) {
+        Call<ArrayList<Lop>> call = mAPIService.LoadDSLopByNganhId(id);
+        call.enqueue(new Callback<ArrayList<Lop>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Lop>> call, Response<ArrayList<Lop>> response) {
+                ArrayList<Lop> list = response.body();
+                if(list.size() == 0) lopSpinner.setText("");
+                else list.add(0, new Lop( 0,"Tất cả"));
+
+                ArrayAdapter<Lop> lopAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item_boloc, list);
+                lopSpinner.setAdapter(lopAdapter);
+                lopSpinner.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Lop lop = (Lop) adapterView.getItemAtPosition(i);
+                    lopId = lop.getId();
+                    lopLoc = lop.getTenLop();
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Lop>> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
     private void LoadDSNganh(AutoCompleteTextView spinner) {
+        if(khoaId != 0) {
+            LoadDSNGanhByKhoaId(khoaId);
+            return;
+        }
+
         Call<ArrayList<Nganh>> call = mAPIService.LoadDSNganh();
         call.enqueue(new Callback<ArrayList<Nganh>>() {
             @Override
@@ -140,17 +249,11 @@ public class MainActivity extends AppCompatActivity {
 
                 ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item_boloc, list);
                 spinner.setAdapter(arrayAdapter);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        Nganh n = (Nganh) adapterView.getItemAtPosition(i);
-                        Toast.makeText(adapterView.getContext(), n.getId() + n.getTenNganh(), Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
+                spinner.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Nganh n = (Nganh) adapterView.getItemAtPosition(i);
+                    LoadDSLopByNganhId(n.getId());
+                    nganhId = n.getId();
+                    nganhLoc = n.getTenNganh();
                 });
             }
 
@@ -160,6 +263,32 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void LoadDSNGanhByKhoaId(int khoaId) {
+        Call<ArrayList<Nganh>> call = mAPIService.LoadDSNganhByKhoaId(khoaId);
+        call.enqueue(new Callback<ArrayList<Nganh>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Nganh>> call, Response<ArrayList<Nganh>> response) {
+                ArrayList<Nganh> list = response.body();
+                list.add(0, new Nganh( 0,"Tất cả"));
+
+                ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item_boloc, list);
+                nganhSpinner.setAdapter(arrayAdapter);
+                nganhSpinner.setOnItemClickListener((adapterView, view, i, l) -> {
+                    Nganh n = (Nganh) adapterView.getItemAtPosition(i);
+                    LoadDSLopByNganhId(n.getId());
+                    nganhId = n.getId();
+                    nganhLoc = n.getTenNganh();
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Nganh>> call, Throwable t) {
+
+            }
+        });
+    }
+
 
     private void LoadDSKhoa() {
         Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
@@ -172,7 +301,8 @@ public class MainActivity extends AppCompatActivity {
                 khoaAdapter_r = new KhoaAdapter_R(list);
                 khoaAdapter_r.setmAPIService(mAPIService);
                 khoaAdapter_r.setListViewsinhvien(listViewsinhvien);
-                khoaAdapter_r.setSvAdapter(adapter);
+                khoaAdapter_r.setSvAdapter(svAdapter);
+                khoaAdapter_r.setHandleLoadEmtpy(handleLoadEmtpy);
                 rv_khoa = (RecyclerView) findViewById(R.id.list_khoa);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 rv_khoa.setLayoutManager(linearLayoutManager);
@@ -198,8 +328,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<SinhVien>> call, Response<List<SinhVien>> response) {
                 sinhVienArrayList = response.body();
 
-                adapter = new sinhvienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
-                listViewsinhvien.setAdapter(adapter);
+                svAdapter = new sinhvienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
+                listViewsinhvien.setAdapter(svAdapter);
                 listViewsinhvien.setTranscriptMode(0);
                 LoadDSKhoa();
             }
@@ -216,9 +346,5 @@ public class MainActivity extends AppCompatActivity {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
-    }
-
-    private void getStudents() {
-
     }
 }
