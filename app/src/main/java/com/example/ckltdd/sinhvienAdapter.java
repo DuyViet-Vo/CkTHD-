@@ -19,6 +19,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 public class sinhvienAdapter extends BaseAdapter {
     private Context context;
     private int layout;
@@ -61,12 +63,15 @@ public class sinhvienAdapter extends BaseAdapter {
         TextView txttensv=(TextView) convertView.findViewById(R.id.txtten);
         TextView txtmasinhvien=(TextView) convertView.findViewById(R.id.txtmasv);
         ImageView imagehinhcanhan = (ImageView) convertView.findViewById(R.id.imagehinh);
+        GifImageView avt_gifLoad = convertView.findViewById(R.id.avt_gifLoad);
+
         //gán giá trị
         SinhVien sinhvien = sinhVienList.get(position);
         txttensv.setText(sinhvien.getHoTen());
         txtmasinhvien.setText(sinhvien.getId());
 
-        Glide.with(context).load("https://app-quanlysv.herokuapp.com/" + sinhvien.getAnhDaiDien()).into(imagehinhcanhan);
+        Glide.with(context).load("https://app-quanlysv.herokuapp.com/img/" + sinhvien.getAnhDaiDien()).into(imagehinhcanhan);
+        avt_gifLoad.getLayoutParams().width = 0;
 
         return convertView;
     }

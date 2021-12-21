@@ -43,7 +43,7 @@ public class LopAdapter extends BaseAdapter {
         convertView = inflater.inflate(layout,null);
         TextView txtlop = (TextView) convertView.findViewById(R.id.txttenlop);
         Lop lop = lopList.get(position);
-        txtlop.setText(lop.getTenlop());
+        txtlop.setText(lop.getTenLop());
         return convertView;
     }
 }

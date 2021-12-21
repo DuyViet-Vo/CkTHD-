@@ -1,17 +1,46 @@
 package com.example.ckltdd;
 
 public class Lop {
-    private String tenlop;
+    private int id, maNganh;
+    private String tenLop;
 
-    public String getTenlop() {
-        return tenlop;
+    public Lop(int id, int maNganh, String tenLop) {
+        this.id = id;
+        this.maNganh = maNganh;
+        this.tenLop = tenLop;
     }
 
-    public void setTenlop(String tenlop) {
-        this.tenlop = tenlop;
+    public Lop(int id, String tenLop) {
+        this.id = id;
+        this.tenLop = tenLop;
     }
 
-    public Lop(String tenlop) {
-        this.tenlop = tenlop;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getMaNganh() {
+        return maNganh;
+    }
+
+    public void setMaNganh(int maNganh) {
+        this.maNganh = maNganh;
+    }
+
+    public String getTenLop() {
+        return tenLop;
+    }
+
+    public void setTenLop(String tenLop) {
+        this.tenLop = tenLop;
+    }
+
+    @Override
+    public String toString() {
+        return tenLop;
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ckltdd.HandleLoadEmtpy;
 import com.example.ckltdd.Khoa;
 import com.example.ckltdd.MainActivity;
 import com.example.ckltdd.R;
@@ -32,10 +33,19 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
     private ListView listViewsinhvien;
     private APIServices mAPIService;
     private sinhvienAdapter svAdapter;
+    private HandleLoadEmtpy handleLoadEmtpy;
 
     public KhoaAdapter_R(List<Khoa> listKhoa) {
         this.listKhoa = listKhoa;
         selected = listKhoa.get(0).getId();
+    }
+
+    public HandleLoadEmtpy getHandleLoadEmtpy() {
+        return handleLoadEmtpy;
+    }
+
+    public void setHandleLoadEmtpy(HandleLoadEmtpy handleLoadEmtpy) {
+        this.handleLoadEmtpy = handleLoadEmtpy;
     }
 
     public ListView getListViewsinhvien() {
@@ -89,12 +99,18 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
         holder.khoaBtn.setOnClickListener(view -> {
             selected = khoa.getId();
             notifyDataSetChanged();
-
+            MainActivity.khoaId = selected;
+            MainActivity.nganhId = 0;
+            MainActivity.lopId = 0;
+            MainActivity.nganhLoc = "";
+            MainActivity.lopLoc = "";
             changeListStudents(khoa.getId());
         });
     }
 
     private void changeListStudents(int idKhoa) {
+        handleLoadEmtpy.empty(1);
+        handleLoadEmtpy.HandleLoadAnimation(true);
         Call<List<SinhVien>> call = mAPIService.LoadStudentsByKhoaId(idKhoa);
         call.enqueue(new Callback<List<SinhVien>>() {
             @Override
@@ -102,6 +118,8 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
                 List<SinhVien> list = response.body();
                 svAdapter.setSinhVienList(list);
                 svAdapter.notifyDataSetChanged();
+                handleLoadEmtpy.HandleLoadAnimation(false);
+                handleLoadEmtpy.empty(list.size());
             }
 
             @Override
