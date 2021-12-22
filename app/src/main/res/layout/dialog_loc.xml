@@ -31,7 +31,7 @@
         android:background="@drawable/bg_dropdown"
         app:endIconDrawable="@drawable/ic_round_arrow_drop_down"
         android:paddingBottom="6dp"
-        android:hint="Khoa"
+        android:hint="Ngành"
         android:overScrollMode="never"
         >
         <AutoCompleteTextView
