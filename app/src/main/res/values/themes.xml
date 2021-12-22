@@ -6,8 +6,8 @@
         <item name="colorPrimaryVariant">#FF77A7</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondary">#FF77A7</item>
+        <item name="colorSecondaryVariant">#FF77A7</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
@@ -17,5 +17,10 @@
     <style name="DropDownListViewStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
         <item name="android:divider">@android:color/transparent</item>
         <item name="android:dividerHeight">0dp</item>
+    </style>
+
+    <style name="SpinnerTheme">
+        <item name="android:textColor">@color/c_374D6B</item>
+        <item name="android:fontFamily">@font/bold</item>
     </style>
 </resources>

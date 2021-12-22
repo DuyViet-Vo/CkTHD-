@@ -32,9 +32,6 @@ public class Khoa {
 
     @Override
     public String toString() {
-        return "Khoa{" +
-                "id=" + id +
-                ", tenkhoa='" + tenKhoa + '\'' +
-                '}';
+        return tenKhoa;
     }
 }
