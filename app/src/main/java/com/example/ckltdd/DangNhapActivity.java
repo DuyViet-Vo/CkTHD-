@@ -22,12 +22,14 @@ public class DangNhapActivity extends AppCompatActivity {
     private Button btnDangNhap;
     private EditText userName, password;
     private APIServices mAPIService;
+    private HandleLoadEmtpy handleLoadEmtpy;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dangnhap);
         setColorStatusBar();
+        handleLoadEmtpy = new HandleLoadEmtpy(findViewById(R.id.login_load));
 
         init();
     }
@@ -64,6 +66,7 @@ public class DangNhapActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(DangNhapActivity.this, "Tài khoản hoặc mật khẩu sai!", Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <RelativeLayout
-    android:id="@+id/donglisst"
+    android:id="@+id/item_sv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:ignore="MissingConstraints"
@@ -27,6 +27,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:cardCornerRadius="50pt"
+        android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
         app:cardElevation="0dp"
         >
@@ -65,23 +66,41 @@
                   />
    </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/btnsua"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="50pt"
+        app:cardElevation="0dp"
+        android:layout_marginRight="10dp"
         android:layout_centerVertical="true"
         android:layout_marginEnd="5dp"
-        android:layout_toStartOf="@+id/btnxoa"
-        android:background="@drawable/ic_edit"
-        android:scaleType="fitXY" />
+        android:layout_toStartOf="@+id/card_xoa">
 
-    <ImageButton
-        android:id="@+id/btnxoa"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@drawable/ic_delete"
-        android:scaleType="fitXY"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"/>
+        <ImageButton
+            android:id="@+id/btnsua"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ripple_btn"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_edit" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_xoa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="50pt"
+        app:cardElevation="0dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true">
+        <ImageButton
+            android:id="@+id/btnxoa"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ripple_btn"
+            android:src="@drawable/ic_delete"
+            android:scaleType="fitXY"/>
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

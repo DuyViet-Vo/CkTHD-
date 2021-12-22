@@ -46,5 +46,7 @@ public interface APIServices {
     @POST("nganh/lop")
     Call<ArrayList<Lop>> LoadDSLopByNganhId(@Query("maNganh") int maNganh);
 
+    @POST("sinhvien/id")
+    Call<SinhVien> getStudentById(@Query("maSV") String maSV);
 
 }

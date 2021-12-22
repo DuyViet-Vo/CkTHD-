@@ -1,13 +1,12 @@
 package com.example.ckltdd.RecycleViewAdapter;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,10 +17,9 @@ import com.example.ckltdd.MainActivity;
 import com.example.ckltdd.R;
 import com.example.ckltdd.Retrofit2.APIServices;
 import com.example.ckltdd.SinhVien;
-import com.example.ckltdd.sinhvienAdapter;
+import com.example.ckltdd.sinhVienAdapter;
 
 import java.util.List;
-import androidx.appcompat.app.AppCompatActivity;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +30,9 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
     private int selected;
     private ListView listViewsinhvien;
     private APIServices mAPIService;
-    private sinhvienAdapter svAdapter;
+    private sinhVienAdapter svAdapter;
     private HandleLoadEmtpy handleLoadEmtpy;
+    private TextView txtLop;
 
     public KhoaAdapter_R(List<Khoa> listKhoa) {
         this.listKhoa = listKhoa;
@@ -42,6 +41,14 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
 
     public HandleLoadEmtpy getHandleLoadEmtpy() {
         return handleLoadEmtpy;
+    }
+
+    public TextView getTxtLop() {
+        return txtLop;
+    }
+
+    public void setTxtLop(TextView txtLop) {
+        this.txtLop = txtLop;
     }
 
     public void setHandleLoadEmtpy(HandleLoadEmtpy handleLoadEmtpy) {
@@ -56,11 +63,11 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
         this.listViewsinhvien = listViewsinhvien;
     }
 
-    public sinhvienAdapter getSvAdapter() {
+    public sinhVienAdapter getSvAdapter() {
         return svAdapter;
     }
 
-    public void setSvAdapter(sinhvienAdapter svAdapter) {
+    public void setSvAdapter(sinhVienAdapter svAdapter) {
         this.svAdapter = svAdapter;
     }
 
@@ -105,6 +112,8 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
             MainActivity.nganhLoc = "";
             MainActivity.lopLoc = "";
             changeListStudents(khoa.getId());
+            if (MainActivity.khoaId == 0) txtLop.setText("");
+            else txtLop.setText("Tất cả");
         });
     }
 

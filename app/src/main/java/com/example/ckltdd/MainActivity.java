@@ -18,7 +18,6 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,34 +28,33 @@ import com.example.ckltdd.Retrofit2.APIServices;
 import com.example.ckltdd.Retrofit2.APIUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    ListView listViewsinhvien;
-    List<SinhVien> sinhVienArrayList;
-    sinhvienAdapter svAdapter;
-    Spinner danhsachNganh,danhsachKhoa;
-    Button btnHuy;
-    ImageButton button_loc;
-    FloatingActionButton fab_them;
-    APIServices mAPIService;
+    private ListView listViewsinhvien;
+    private List<SinhVien> sinhVienArrayList;
+    private sinhVienAdapter svAdapter;
+    private Spinner danhsachNganh,danhsachKhoa;
+    private Button btnHuy;
+    private ImageButton button_loc;
+    private FloatingActionButton fab_them;
+    private APIServices mAPIService;
+    private TextView txtLop;
 
-    KhoaAdapter_R khoaAdapter_r;
-    RecyclerView rv_khoa;
+    private KhoaAdapter_R khoaAdapter_r;
+    private RecyclerView rv_khoa;
 
-    Dialog locDialog;
+    private Dialog locDialog;
 
-    AutoCompleteTextView lopSpinner, nganhSpinner;
-    HandleLoadEmtpy handleLoadEmtpy;
+    private AutoCompleteTextView lopSpinner, nganhSpinner;
+    private HandleLoadEmtpy handleLoadEmtpy;
 
     public static int khoaId = 0, nganhId = 0, lopId = 0;
     public static String nganhLoc, lopLoc;
@@ -68,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         setColorStatusBar();
         mAPIService = APIUtils.getAPIService();
         handleLoadEmtpy = new HandleLoadEmtpy(findViewById(R.id.sv_load), findViewById(R.id.lvsinhvien),findViewById(R.id.sv_0));
+        txtLop = findViewById(R.id.txtlop);
 
         //them
         fab_them = (FloatingActionButton) findViewById(R.id.fAddBtn) ;
@@ -120,9 +119,26 @@ public class MainActivity extends AppCompatActivity {
         });
 
         locBtn.setOnClickListener(view -> {
-
             LoadStudentsByClassId(khoaId, nganhId, lopId);
             locDialog.cancel();
+
+
+            if (lopId != 0)  {
+                txtLop.setText(lopLoc);
+                return;
+            }
+
+            if (nganhId != 0) {
+                txtLop.setText(nganhLoc);
+                return;
+            }
+
+            if (khoaId != 0) {
+                txtLop.setText("Tất cả");
+                return;
+            }
+
+            txtLop.setText("");
         });
     }
 
@@ -303,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
                 khoaAdapter_r.setListViewsinhvien(listViewsinhvien);
                 khoaAdapter_r.setSvAdapter(svAdapter);
                 khoaAdapter_r.setHandleLoadEmtpy(handleLoadEmtpy);
+                khoaAdapter_r.setTxtLop(txtLop);
                 rv_khoa = (RecyclerView) findViewById(R.id.list_khoa);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 rv_khoa.setLayoutManager(linearLayoutManager);
@@ -328,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<List<SinhVien>> call, Response<List<SinhVien>> response) {
                 sinhVienArrayList = response.body();
 
-                svAdapter = new sinhvienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
+                svAdapter = new sinhVienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
                 listViewsinhvien.setAdapter(svAdapter);
                 listViewsinhvien.setTranscriptMode(0);
                 LoadDSKhoa();

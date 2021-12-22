@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class SinhVien {
-    private String id, hoTen, ngaySinh, email, sdt, diaChi, CCCD, anhDaiDien;
+    private String id, hoTen, ngaySinh, email, sdt, diaChi, CCCD, anhDaiDien, tenLop, tenNganh;
     private int maLop;
     private byte gioiTinh;
 
@@ -90,6 +90,22 @@ public class SinhVien {
         this.gioiTinh = gioiTinh;
     }
 
+    public String getTenLop() {
+        return tenLop;
+    }
+
+    public void setTenLop(String tenLop) {
+        this.tenLop = tenLop;
+    }
+
+    public String getTenNganh() {
+        return tenNganh;
+    }
+
+    public void setTenNganh(String tenNganh) {
+        this.tenNganh = tenNganh;
+    }
+
     public SinhVien(String id, String hoTen, String ngaySinh, String email, String sdt, String diaChi, String CCCD, String anhDaiDien, int maLop, byte gioiTinh) {
         this.id = id;
         this.hoTen = hoTen;
@@ -103,19 +119,36 @@ public class SinhVien {
         this.gioiTinh = gioiTinh;
     }
 
+    public SinhVien(String id, String hoTen, String ngaySinh, String email, String sdt, String diaChi, String CCCD, String anhDaiDien, String tenLop, String tenNganh, int maLop, byte gioiTinh) {
+        this.id = id;
+        this.hoTen = hoTen;
+        this.ngaySinh = ngaySinh;
+        this.email = email;
+        this.sdt = sdt;
+        this.diaChi = diaChi;
+        this.CCCD = CCCD;
+        this.anhDaiDien = anhDaiDien;
+        this.tenLop = tenLop;
+        this.tenNganh = tenNganh;
+        this.maLop = maLop;
+        this.gioiTinh = gioiTinh;
+    }
+
     @Override
     public String toString() {
         return "SinhVien{" +
                 "id='" + id + '\'' +
                 ", hoTen='" + hoTen + '\'' +
-                ", gioiTinh=" + gioiTinh +
-                ", ngaySinh=" + ngaySinh +
+                ", ngaySinh='" + ngaySinh + '\'' +
                 ", email='" + email + '\'' +
                 ", sdt='" + sdt + '\'' +
                 ", diaChi='" + diaChi + '\'' +
                 ", CCCD='" + CCCD + '\'' +
-                ", andDaiDien='" + anhDaiDien + '\'' +
+                ", anhDaiDien='" + anhDaiDien + '\'' +
+                ", tenLop='" + tenLop + '\'' +
+                ", tenNganh='" + tenNganh + '\'' +
                 ", maLop=" + maLop +
+                ", gioiTinh=" + gioiTinh +
                 '}';
     }
 }
