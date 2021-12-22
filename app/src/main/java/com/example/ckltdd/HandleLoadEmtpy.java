@@ -17,6 +17,13 @@ public class HandleLoadEmtpy {
         this.empty = empty;
     }
 
+    public HandleLoadEmtpy(GifImageView load) {
+        this.load = load;
+    }
+
+    public HandleLoadEmtpy() {
+    }
+
     public GifImageView getLoad() {
         return load;
     }
@@ -42,6 +49,13 @@ public class HandleLoadEmtpy {
             load.getLayoutParams().height = 0;
             listView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
         }
+    }
+
+    public void HandleLoadAnimation1(boolean isLoad) {
+        if (isLoad)
+            load.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        else
+            load.getLayoutParams().height = 0;
     }
 
     public void empty(int soLuong) {
