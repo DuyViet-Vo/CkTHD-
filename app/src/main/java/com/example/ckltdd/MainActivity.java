@@ -270,6 +270,9 @@ public class MainActivity extends AppCompatActivity {
                     LoadDSLopByNganhId(n.getId());
                     nganhId = n.getId();
                     nganhLoc = n.getTenNganh();
+                    lopId = 0;
+                    lopLoc = "";
+                    lopSpinner.setText("");
                 });
             }
 
