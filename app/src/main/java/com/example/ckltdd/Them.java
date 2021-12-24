@@ -441,6 +441,11 @@ public class Them extends AppCompatActivity {
 //    ---------------------------------------------------------------------------------------
 
     private void initKhoaSpinner() {
+        ArrayList<Khoa> list = new ArrayList<>();
+        list.add(0, new Khoa( 0,"Chọn khoa"));
+        ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(Them.this, R.layout.item_boloc, list);
+        danhsachkhoa.setAdapter(arrayAdapter);
+
         Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
         call.enqueue(new Callback<List<Khoa>>() {
             @Override

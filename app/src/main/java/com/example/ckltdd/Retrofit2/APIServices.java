@@ -52,4 +52,10 @@ public interface APIServices {
     @POST("sinhvien/insert")
     Call<SinhVien> InsertSV(@Body SinhVien sinhVien);
 
+    @POST("sinhvien/update")
+    Call<SinhVien> UpdateSV(@Body SinhVien sinhVien);
+
+    @POST("sinhvien/delete")
+    Call<Boolean> DeleteSV(@Query("id") String id);
+
 }

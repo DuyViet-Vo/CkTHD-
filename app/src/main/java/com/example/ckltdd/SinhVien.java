@@ -197,6 +197,8 @@ public class SinhVien {
                 ", tenLop='" + tenLop + '\'' +
                 ", tenNganh='" + tenNganh + '\'' +
                 ", maLop=" + maLop +
+                ", maKhoa=" + maKhoa +
+                ", maNganh=" + maNganh +
                 ", gioiTinh=" + gioiTinh +
                 '}';
     }

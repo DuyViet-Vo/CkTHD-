@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -51,13 +53,14 @@ public class sua extends AppCompatActivity {
     Boolean isValid = false;
     ImageButton them_back;
     Button them_luu;
-    LinearLayout load_insert;
-    final int matchParent = LinearLayout.LayoutParams.MATCH_PARENT;
+    RelativeLayout sua_content;
+
+    int khoaSelected = -1, lopSelected = -1, nganhSelected = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_them);
+        setContentView(R.layout.activity_sua);
         setColorStatusBar();
         mAPIService = APIUtils.getAPIService();
 
@@ -72,7 +75,7 @@ public class sua extends AppCompatActivity {
         them_back = findViewById(R.id.them_back);
         them_luu = findViewById(R.id.them_luu);
 
-        load_insert = findViewById(R.id.load_insert);
+        sua_content = findViewById(R.id.sua_content);
 
         them_nu.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -88,12 +91,12 @@ public class sua extends AppCompatActivity {
             }
         });
 
-        initKhoaSpinner();
-        initNganhSpinner();
-        initLopSpinner();
-
         initInvalidTextView();
         initInput();
+
+        Intent intent = getIntent();
+        String idSV = intent.getStringExtra("idSV");
+        StudentRequest(idSV);
 
         them_back.setOnClickListener(view -> {
             onBackPressed();
@@ -101,7 +104,7 @@ public class sua extends AppCompatActivity {
 
         them_luu.setOnClickListener(view -> {
             try {
-                ThemSV();
+                SuaSV();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -120,12 +123,10 @@ public class sua extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         ValidData();
-        Intent intent = getIntent();
-        String idSV = intent.getStringExtra("idSV");
-        StudentRequest(idSV);
+
     }
 
-    private void ThemSV() throws IOException {
+    private void SuaSV() throws IOException {
 
 
         Khoa khoa = (Khoa) danhsachkhoa.getSelectedItem();
@@ -133,7 +134,6 @@ public class sua extends AppCompatActivity {
         Nganh nganh = (Nganh) danhsachnganh.getSelectedItem();
 
         String[] errors = {
-                CheckNumber(et_msv.getText().toString(), "Mã sinh viên", 13, et_msv, tv_masv),
                 CheckNumber(et_cccd.getText().toString(), "Số CCCD", 12, et_cccd, tv_cccd),
                 CheckNumber(et_sdt.getText().toString(), "Số điện thoại", 10, et_sdt, tv_sdt),
                 CheckHoTen(et_hoTen.getText().toString()),
@@ -148,8 +148,6 @@ public class sua extends AppCompatActivity {
         for (int i = 0; i < errors.length ; i ++) {
             if (!errors[i].isEmpty()) return;
         }
-
-        load_insert.getLayoutParams().height = matchParent;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
@@ -172,7 +170,7 @@ public class sua extends AppCompatActivity {
                 ngaySinh
         );
 
-        Call<SinhVien> call = mAPIService.InsertSV(sinhVien);
+        Call<SinhVien> call = mAPIService.UpdateSV(sinhVien);
         call.execute();
 
         Intent intent = new Intent();
@@ -210,7 +208,6 @@ public class sua extends AppCompatActivity {
     //    ------------------------------- VALID DATA --------------------------------------------------------
 
     private void ValidData() {
-        CheckMSV();
         CheckHoTen();
         CheckNgaySinh();
         CheckCCCD();
@@ -396,33 +393,6 @@ public class sua extends AppCompatActivity {
         return check;
     }
 
-    private void CheckMSV() {
-        et_msv.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String check = CheckNumber(charSequence.toString(), "Mã sinh viên", 13, et_msv, tv_masv);
-                ValidAction(et_msv, tv_masv, check);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-    }
-
-    private String CheckMSVTonTai(String idSV) throws IOException {
-        Call<SinhVien> call = mAPIService.getStudentById(idSV);
-        SinhVien sinhVien = call.execute().body();
-        System.out.println(sinhVien);
-        return sinhVien.getHoTen() == null ? "" : "Mã sinh viên đã tồn tại!";
-    }
-
     private String CheckNumber(String str, String msg, int lenght, EditText et, TextView tv) {
         String check = ValidData.IsEmpty(str);
         check = !check.isEmpty() ? check : ValidData.IsNumber(str, msg, lenght);
@@ -434,6 +404,11 @@ public class sua extends AppCompatActivity {
 //    ---------------------------------------------------------------------------------------
 
     private void initKhoaSpinner() {
+        ArrayList<Khoa> list = new ArrayList<>();
+        list.add(0, new Khoa( 0,"Chọn khoa"));
+        ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(sua.this, R.layout.item_boloc, list);
+        danhsachkhoa.setAdapter(arrayAdapter);
+
         Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
         call.enqueue(new Callback<List<Khoa>>() {
             @Override
@@ -443,6 +418,13 @@ public class sua extends AppCompatActivity {
 
                 ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(sua.this, R.layout.item_boloc, list);
                 danhsachkhoa.setAdapter(arrayAdapter);
+
+                for (int j = 0; j < arrayAdapter.getCount(); j ++) {
+                    if(arrayAdapter.getItem(j).getId() == khoaSelected)
+                        danhsachkhoa.setSelection(j);
+                    System.out.println(arrayAdapter.getItem(j));
+                }
+
                 danhsachkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -510,6 +492,7 @@ public class sua extends AppCompatActivity {
                 }
                 danhsachlop.setSelection(0, true);
                 CheckSpinner(danhsachnganh, tv_nganh, nganh.getId());
+
             }
 
             @Override
@@ -528,6 +511,12 @@ public class sua extends AppCompatActivity {
                 list.add(0, new Nganh( 0,"Chọn ngành"));
                 ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter<>(sua.this, R.layout.item_boloc, list);
                 danhsachnganh.setAdapter(arrayAdapter);
+
+                for (int j = 0; j < arrayAdapter.getCount(); j ++) {
+                    if(arrayAdapter.getItem(j).getId() == nganhSelected)
+                        danhsachnganh.setSelection(j);
+                    System.out.println(arrayAdapter.getItem(j));
+                }
             }
 
             @Override
@@ -546,6 +535,13 @@ public class sua extends AppCompatActivity {
                 list.add(0, new Lop( 0,"Chọn lớp"));
                 ArrayAdapter<Lop> lopAdapter = new ArrayAdapter<>(sua.this, R.layout.item_boloc, list);
                 danhsachlop.setAdapter(lopAdapter);
+
+                for (int j = 0; j < lopAdapter.getCount(); j ++) {
+                    if(lopAdapter.getItem(j).getId() == lopSelected)
+                        danhsachlop.setSelection(j);
+                    System.out.println(lopAdapter.getItem(j));
+                }
+
             }
 
             @Override
@@ -612,8 +608,12 @@ public class sua extends AppCompatActivity {
 
                 et_hoTen.setText(sinhVien.getHoTen());
                 et_msv.setText(sinhVien.getId());
-//                .setText(sinhVien.getTenLop());
-//                nganh.setText(sinhVien.getTenNganh());
+                et_msv.setEnabled(false);
+
+                nganhSelected = sinhVien.getMaNganh();
+                lopSelected = sinhVien.getMaLop();
+                khoaSelected = sinhVien.getMaKhoa();
+
                 if (sinhVien.getGioiTinh() == 1) them_nam.setChecked(true);
                 else them_nu.setChecked(true);
 
@@ -634,6 +634,14 @@ public class sua extends AppCompatActivity {
                 } else {
                     Glide.with(sua.this).load("https://app-quanlysv.herokuapp.com/img/" + sinhVien.getAnhDaiDien()).into(them_avt);
                 }
+
+                sua_content.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+                initKhoaSpinner();
+                initNganhSpinner();
+                initLopSpinner();
+
+
             }
 
             @Override
