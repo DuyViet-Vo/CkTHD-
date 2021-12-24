@@ -1,6 +1,8 @@
 package com.example.ckltdd;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +13,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -18,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -41,12 +47,12 @@ public class MainActivity extends AppCompatActivity {
     private ListView listViewsinhvien;
     private List<SinhVien> sinhVienArrayList;
     private sinhVienAdapter svAdapter;
-    private Spinner danhsachNganh,danhsachKhoa;
-    private Button btnHuy;
     private ImageButton button_loc;
     private FloatingActionButton fab_them;
     private APIServices mAPIService;
     private TextView txtLop;
+    private Button notification;
+    private CardView card_notification;
 
     private KhoaAdapter_R khoaAdapter_r;
     private RecyclerView rv_khoa;
@@ -58,6 +64,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static int khoaId = 0, nganhId = 0, lopId = 0;
     public static String nganhLoc, lopLoc;
+    private int REQUEST_CODE = 111;
+    private int REQUEST_CODE_EDIT = 112;
+    private HandlerThread handlerThread = new HandlerThread("background-thread");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,14 +76,15 @@ public class MainActivity extends AppCompatActivity {
         mAPIService = APIUtils.getAPIService();
         handleLoadEmtpy = new HandleLoadEmtpy(findViewById(R.id.sv_load), findViewById(R.id.lvsinhvien),findViewById(R.id.sv_0));
         txtLop = findViewById(R.id.txtlop);
+        notification = findViewById(R.id.notification);
+        card_notification = findViewById(R.id.card_notification);
 
         //them
         fab_them = (FloatingActionButton) findViewById(R.id.fAddBtn) ;
         fab_them.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Them.class);
-                startActivity(intent);
+                startActivityForResult(new Intent(MainActivity.this, Them.class), REQUEST_CODE);
             }
         });
         button_loc = findViewById(R.id.button_loc);
@@ -85,6 +95,34 @@ public class MainActivity extends AppCompatActivity {
 
         LoadStudents();
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            lopId = data.getIntExtra("idLop", 0);
+            lopLoc = data.getStringExtra("tenLop");
+            txtLop.setText(lopLoc);
+            khoaAdapter_r.setSelected(data.getIntExtra("idKhoa", 0));
+            khoaAdapter_r.notifyDataSetChanged();
+            LoadStudentsByClassId(khoaId, nganhId, lopId);
+
+            notification.setText("Thêm thành công!");
+            notification.setBackgroundColor(Color.parseColor("#6CD06A"));
+            card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+            handlerThread.start();
+            final Handler handler = new Handler(handlerThread.getLooper());
+            handler.postDelayed(new Runnable() {
+                @Override public void run() {
+                    card_notification.getLayoutParams().height = 0;
+                    handlerThread.quitSafely();
+                }
+            }, 2000);
+        }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void LocDialog() {
@@ -154,9 +192,6 @@ public class MainActivity extends AppCompatActivity {
                 svAdapter.notifyDataSetChanged();
                 handleLoadEmtpy.HandleLoadAnimation(false);
                 handleLoadEmtpy.empty(list.size());
-
-                System.out.println(khoaId + "__" +nganhId + "__" +lopId);
-                System.out.println(list.size());
             }
 
             @Override

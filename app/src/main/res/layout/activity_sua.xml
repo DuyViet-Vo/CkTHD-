@@ -132,6 +132,7 @@
                     android:background="@drawable/shape_thongtin"
                     android:fontFamily="@font/bold"
                     android:hint="Mã sinh viên"
+                    android:editable="false"
                     android:paddingHorizontal="20dp"
                     android:textColor="@color/c_374D6B"
                     android:textColorHint="#403E5370"

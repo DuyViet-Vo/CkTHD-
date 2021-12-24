@@ -39,6 +39,14 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
         selected = listKhoa.get(0).getId();
     }
 
+    public int getSelected() {
+        return selected;
+    }
+
+    public void setSelected(int selected) {
+        this.selected = selected;
+    }
+
     public HandleLoadEmtpy getHandleLoadEmtpy() {
         return handleLoadEmtpy;
     }
