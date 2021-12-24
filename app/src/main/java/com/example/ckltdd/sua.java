@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,7 +23,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.ckltdd.Retrofit2.APIServices;
@@ -42,7 +39,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Them extends AppCompatActivity {
+public class sua extends AppCompatActivity {
+
     EditText editDate;
     Spinner danhsachkhoa,danhsachnganh,danhsachlop;
     APIServices mAPIService;
@@ -122,6 +120,9 @@ public class Them extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
         ValidData();
+        Intent intent = getIntent();
+        String idSV = intent.getStringExtra("idSV");
+        StudentRequest(idSV);
     }
 
     private void ThemSV() throws IOException {
@@ -158,7 +159,7 @@ public class Them extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        
+
         SinhVien sinhVien = new SinhVien(
                 et_msv.getText().toString(),
                 et_hoTen.getText().toString(),
@@ -168,7 +169,7 @@ public class Them extends AppCompatActivity {
                 et_email.getText().toString(),
                 et_diaChi.getText().toString(),
                 lop.getId(),
-                ngaySinh                
+                ngaySinh
         );
 
         Call<SinhVien> call = mAPIService.InsertSV(sinhVien);
@@ -405,14 +406,6 @@ public class Them extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String check = CheckNumber(charSequence.toString(), "Mã sinh viên", 13, et_msv, tv_masv);
-
-                if(check.isEmpty() && charSequence.length() == 13)
-                    try {
-                        check = CheckMSVTonTai(charSequence.toString());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                 ValidAction(et_msv, tv_masv, check);
             }
 
@@ -448,7 +441,7 @@ public class Them extends AppCompatActivity {
                 ArrayList<Khoa> list = (ArrayList<Khoa>) response.body();
                 list.add(0, new Khoa( 0,"Chọn khoa"));
 
-                ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(Them.this, R.layout.item_boloc, list);
+                ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(sua.this, R.layout.item_boloc, list);
                 danhsachkhoa.setAdapter(arrayAdapter);
                 danhsachkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -496,7 +489,7 @@ public class Them extends AppCompatActivity {
         ArrayList<Nganh> list = new ArrayList<>();
         list.add(0, new Nganh( 0,"Chọn Ngành"));
 
-        ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter(Them.this, R.layout.item_boloc, list);
+        ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter(sua.this, R.layout.item_boloc, list);
         danhsachnganh.setEnabled(false);
         danhsachnganh.setAdapter(arrayAdapter);
         danhsachnganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -533,7 +526,7 @@ public class Them extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Nganh>> call, Response<ArrayList<Nganh>> response) {
                 ArrayList<Nganh> list = response.body();
                 list.add(0, new Nganh( 0,"Chọn ngành"));
-                ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter<>(Them.this, R.layout.item_boloc, list);
+                ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter<>(sua.this, R.layout.item_boloc, list);
                 danhsachnganh.setAdapter(arrayAdapter);
             }
 
@@ -551,7 +544,7 @@ public class Them extends AppCompatActivity {
             public void onResponse(Call<ArrayList<Lop>> call, Response<ArrayList<Lop>> response) {
                 ArrayList<Lop> list = response.body();
                 list.add(0, new Lop( 0,"Chọn lớp"));
-                ArrayAdapter<Lop> lopAdapter = new ArrayAdapter<>(Them.this, R.layout.item_boloc, list);
+                ArrayAdapter<Lop> lopAdapter = new ArrayAdapter<>(sua.this, R.layout.item_boloc, list);
                 danhsachlop.setAdapter(lopAdapter);
             }
 
@@ -566,7 +559,7 @@ public class Them extends AppCompatActivity {
         ArrayList<Lop> list = new ArrayList<>();
         list.add(0, new Lop( 0,"Chọn lớp"));
 
-        ArrayAdapter<Lop> arrayAdapter = new ArrayAdapter(Them.this, R.layout.item_boloc, list);
+        ArrayAdapter<Lop> arrayAdapter = new ArrayAdapter(sua.this, R.layout.item_boloc, list);
         danhsachlop.setEnabled(false);
         danhsachlop.setAdapter(arrayAdapter);
         danhsachlop.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -600,11 +593,54 @@ public class Them extends AppCompatActivity {
         datePickerDialog.show();
     }
 
+
+
+
     private void setColorStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
-        getWindow().setStatusBarColor(ContextCompat.getColor(Them.this,R.color.white));
+        getWindow().setStatusBarColor(ContextCompat.getColor(sua.this,R.color.white));
+    }
+
+    private void StudentRequest(String idSV) {
+        Call<SinhVien> call = mAPIService.getStudentById(idSV);
+        call.enqueue(new Callback<SinhVien>() {
+            @Override
+            public void onResponse(Call<SinhVien> call, Response<SinhVien> response) {
+                SinhVien sinhVien = response.body();
+
+                et_hoTen.setText(sinhVien.getHoTen());
+                et_msv.setText(sinhVien.getId());
+//                .setText(sinhVien.getTenLop());
+//                nganh.setText(sinhVien.getTenNganh());
+                if (sinhVien.getGioiTinh() == 1) them_nam.setChecked(true);
+                else them_nu.setChecked(true);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    et_ngaySinh.setText(sdf2.format(sdf.parse(sinhVien.getNgaySinh())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                et_cccd.setText(sinhVien.getCCCD());
+                et_sdt.setText(sinhVien.getSdt());
+                et_email.setText(sinhVien.getEmail());
+                et_diaChi.setText(sinhVien.getDiaChi());
+                if (sinhVien.getAnhDaiDien() == null || sinhVien.getAnhDaiDien().isEmpty()) {
+                    them_avt.setImageResource(sinhVien.getGioiTinh() == 1 ? R.drawable.avatar_nam2 : R.drawable.avt_nu);
+                } else {
+                    Glide.with(sua.this).load("https://app-quanlysv.herokuapp.com/img/" + sinhVien.getAnhDaiDien()).into(them_avt);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SinhVien> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
     }
 
 }

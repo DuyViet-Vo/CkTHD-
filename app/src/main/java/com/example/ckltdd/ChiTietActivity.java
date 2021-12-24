@@ -82,7 +82,7 @@ public class ChiTietActivity extends AppCompatActivity {
                 gioiTinh.setText(sinhVien.getGioiTinh() == 1 ? "Nam" : "Nữ");
 
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yyyy");
                 try {
                     ngaySinh.setText(sdf2.format(sdf.parse(sinhVien.getNgaySinh())));
                 } catch (ParseException e) {
@@ -93,7 +93,11 @@ public class ChiTietActivity extends AppCompatActivity {
                 sdt.setText(sinhVien.getSdt());
                 email.setText(sinhVien.getEmail());
                 diaChi.setText(sinhVien.getDiaChi());
-                Glide.with(ChiTietActivity.this).load("https://app-quanlysv.herokuapp.com/img/" + sinhVien.getAnhDaiDien()).into(ct_avt);
+                if (sinhVien.getAnhDaiDien() == null || sinhVien.getAnhDaiDien().isEmpty()) {
+                    ct_avt.setImageResource(sinhVien.getGioiTinh() == 1 ? R.drawable.avatar_nam2 : R.drawable.avt_nu);
+                } else {
+                    Glide.with(ChiTietActivity.this).load("https://app-quanlysv.herokuapp.com/img/" + sinhVien.getAnhDaiDien()).into(ct_avt);
+                }
                 ct_content.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
             }
 

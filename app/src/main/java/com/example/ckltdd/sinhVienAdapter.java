@@ -1,5 +1,6 @@
 package com.example.ckltdd;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +29,7 @@ public class sinhVienAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<SinhVien> sinhVienList;
+    private int REQUEST_CODE_EDIT = 112;
 
     public sinhVienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
         this.context = context;
@@ -67,19 +70,32 @@ public class sinhVienAdapter extends BaseAdapter {
         ImageView imagehinhcanhan = (ImageView) convertView.findViewById(R.id.imagehinh);
         GifImageView avt_gifLoad = convertView.findViewById(R.id.avt_gifLoad);
         RelativeLayout relativeLayout = convertView.findViewById(R.id.item_sv);
+        ImageButton btnSua = convertView.findViewById(R.id.btnsua);
+        ImageButton btnXoa = convertView.findViewById(R.id.btnxoa);
 
         //gán giá trị
         SinhVien sinhvien = sinhVienList.get(position);
         txttensv.setText(sinhvien.getHoTen());
         txtmasinhvien.setText(sinhvien.getId());
 
-        Glide.with(context).load("https://app-quanlysv.herokuapp.com/img/" + sinhvien.getAnhDaiDien()).into(imagehinhcanhan);
+        if (sinhvien.getAnhDaiDien() == null || sinhvien.getAnhDaiDien().isEmpty()) {
+            imagehinhcanhan.setImageResource(sinhvien.getGioiTinh() == 1 ? R.drawable.avatar_nam2 : R.drawable.avt_nu);
+        } else {
+            Glide.with(context).load("https://app-quanlysv.herokuapp.com/img/" + sinhvien.getAnhDaiDien()).into(imagehinhcanhan);
+        }
+
         avt_gifLoad.getLayoutParams().width = 0;
 
         relativeLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, ChiTietActivity.class);
             intent.putExtra("idSV", sinhvien.getId());
             context.startActivity(intent);
+        });
+
+        btnSua.setOnClickListener(view -> {
+            Intent intent = new Intent(context, sua.class);
+            intent.putExtra("idSV", sinhvien.getId());
+            ((Activity) context).startActivityForResult(intent,REQUEST_CODE_EDIT);
         });
 
         return convertView;

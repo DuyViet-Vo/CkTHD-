@@ -49,4 +49,7 @@ public interface APIServices {
     @POST("sinhvien/id")
     Call<SinhVien> getStudentById(@Query("maSV") String maSV);
 
+    @POST("sinhvien/insert")
+    Call<SinhVien> InsertSV(@Body SinhVien sinhVien);
+
 }
