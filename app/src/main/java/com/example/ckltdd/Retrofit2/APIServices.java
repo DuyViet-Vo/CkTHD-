@@ -56,6 +56,6 @@ public interface APIServices {
     Call<SinhVien> UpdateSV(@Body SinhVien sinhVien);
 
     @POST("sinhvien/delete")
-    Call<Boolean> DeleteSV(@Query("id") String id);
+    Call<Integer> DeleteSV(@Query("id") String id);
 
 }

@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
             LocDialog();
         });
 
-        LoadDSKhoa();
         LoadStudents();
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
@@ -388,6 +387,11 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 rv_khoa.setLayoutManager(linearLayoutManager);
                 rv_khoa.setAdapter(khoaAdapter_r);
+
+                svAdapter.setHandleLoadEmtpy(handleLoadEmtpy);
+                svAdapter.setNotification(notification);
+                svAdapter.setKhoaAdapter_r(khoaAdapter_r);
+                svAdapter.setCard_notification(card_notification);
             }
 
             @Override
@@ -412,12 +416,7 @@ public class MainActivity extends AppCompatActivity {
                 svAdapter = new sinhVienAdapter(MainActivity.this,R.layout.item_sinhvien, sinhVienArrayList);
                 listViewsinhvien.setAdapter(svAdapter);
                 listViewsinhvien.setTranscriptMode(0);
-                svAdapter.setHandleLoadEmtpy(handleLoadEmtpy);
-                svAdapter.setNotification(notification);
-                svAdapter.setKhoaAdapter_r(khoaAdapter_r);
-                svAdapter.setTxtLop(txtLop);
-                svAdapter.setCard_notification(card_notification);
-
+                LoadDSKhoa();
             }
 
             @Override

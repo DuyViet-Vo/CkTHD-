@@ -51,7 +51,6 @@ public class sinhVienAdapter extends BaseAdapter {
     private Button notification;
     private CardView card_notification;
     private KhoaAdapter_R khoaAdapter_r;
-    private TextView txtLop;
 
     public KhoaAdapter_R getKhoaAdapter_r() {
         return khoaAdapter_r;
@@ -67,14 +66,6 @@ public class sinhVienAdapter extends BaseAdapter {
 
     public void setCard_notification(CardView card_notification) {
         this.card_notification = card_notification;
-    }
-
-    public TextView getTxtLop() {
-        return txtLop;
-    }
-
-    public void setTxtLop(TextView txtLop) {
-        this.txtLop = txtLop;
     }
 
     public sinhVienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
@@ -192,29 +183,31 @@ public class sinhVienAdapter extends BaseAdapter {
             });
 
             xoaBtn.setOnClickListener(view1 -> {
-                Call<Boolean> call = APIUtils.getAPIService().DeleteSV(sinhvien.getId());
-                try {
-                    call.execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Call<Integer> call = APIUtils.getAPIService().DeleteSV(sinhvien.getId());
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        khoaAdapter_r.setSelected(MainActivity.khoaId);
+                        khoaAdapter_r.notifyDataSetChanged();
+                        LoadStudentsByClassId(MainActivity.khoaId, MainActivity.nganhId, MainActivity.lopId);
 
-                txtLop.setText(MainActivity.lopLoc);
-                khoaAdapter_r.setSelected(MainActivity.khoaId);
-                khoaAdapter_r.notifyDataSetChanged();
-                LoadStudentsByClassId(MainActivity.khoaId, MainActivity.nganhId, MainActivity.lopId);
+                        notification.setText("Xóa thành công!");
+                        notification.setBackgroundColor(Color.parseColor("#6CD06A"));
+                        card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-                notification.setText("Xóa thành công!");
-                notification.setBackgroundColor(Color.parseColor("#6CD06A"));
-                card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+                                        card_notification.getLayoutParams().height = 0;
+                                    }
+                                }, 3000);
+                    }
 
-                new android.os.Handler().postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                card_notification.getLayoutParams().height = 0;
-                            }
-                        }, 3000);
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
 
+                    }
+                });
                 xoa.cancel();
             });
         });
