@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.example.ckltdd.Fragment.QLKhoa;
 import com.example.ckltdd.Khoa;
 import com.example.ckltdd.R;
 import com.example.ckltdd.Retrofit2.APIUtils;
+import com.example.ckltdd.ValidData;
 
 import java.util.List;
 
@@ -55,6 +57,45 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
             return;
 
         holder.tv_ten.setText(khoa.getTenkhoa());
+
+        holder.btnSua.setOnClickListener(view -> {
+
+            Dialog sua = new Dialog(context);
+            sua.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            sua.setContentView(R.layout.dialog_them_khoa);
+
+            Window window = sua.getWindow();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            WindowManager.LayoutParams windowsAttributes = window.getAttributes();
+            windowsAttributes.gravity = Gravity.CENTER;
+            window.setAttributes(windowsAttributes);
+
+            sua.show();
+
+            EditText ten_khoa = sua.findViewById(R.id.them_khoa);
+            TextView valid_ten = sua.findViewById(R.id.valid_ten);
+            Button btnHuy = sua.findViewById(R.id.btnHuy),
+                    btnSua = sua.findViewById((R.id.btnThem));
+
+            ten_khoa.setText(khoa.getTenkhoa());
+            btnSua.setText("Cập nhật");
+
+            btnHuy.setOnClickListener(view1 -> {
+                sua.cancel();
+            });
+
+            btnSua.setOnClickListener(view1 -> {
+                String err = ValidData.IsEmpty(ten_khoa.getText().toString());
+                ValidAction(ten_khoa, valid_ten, err);
+
+                if (!err.isEmpty()) return;
+
+                khoa.setTenkhoa(ten_khoa.getText().toString());
+                Update(khoa, sua);
+            });
+        });
 
         holder.btnXoa.setOnClickListener(view -> {
             Dialog xoa = new Dialog(context);
@@ -95,6 +136,34 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
                 xoa.cancel();
             });
         });
+    }
+
+    private void Update(Khoa khoa, Dialog dialog) {
+        Call<Khoa> call = APIUtils.getAPIService().UpdateKhoa(khoa);
+        call.enqueue(new Callback<Khoa>() {
+            @Override
+            public void onResponse(Call<Khoa> call, Response<Khoa> response) {
+                LoadDSKhoa();
+                QLKhoa.notification.Notify("Sửa thành công!", "success");
+            }
+
+            @Override
+            public void onFailure(Call<Khoa> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+        dialog.cancel();
+    }
+
+    private void ValidAction(EditText editText, TextView textView, String check) {
+        if (!check.isEmpty()) {
+            editText.setBackground(context.getResources().getDrawable(R.drawable.bg_invalid));
+            textView.setText(check);
+            return;
+        }
+
+        editText.setBackground(context.getResources().getDrawable(R.drawable.shape_thongtin));
+        textView.setText("");
     }
 
     @Override
