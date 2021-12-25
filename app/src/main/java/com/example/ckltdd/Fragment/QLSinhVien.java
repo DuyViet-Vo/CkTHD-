@@ -73,11 +73,11 @@ public class QLSinhVien extends Fragment {
 
     private KhoaAdapter_R khoaAdapter_r;
     private RecyclerView rv_khoa;
+    private HandleLoadEmtpy handleLoadEmtpy;
 
     private Dialog locDialog;
 
     private AutoCompleteTextView lopSpinner, nganhSpinner;
-    private HandleLoadEmtpy handleLoadEmtpy;
 
     public static int khoaId = 0, nganhId = 0, lopId = 0;
     public static String nganhLoc, lopLoc;
@@ -135,7 +135,7 @@ public class QLSinhVien extends Fragment {
 
         handleLoadEmtpy = new HandleLoadEmtpy(
                 rootView.findViewById(R.id.sv_load_sv),
-                rootView.findViewById(R.id.lvsinhvien),
+                (ListView) rootView.findViewById(R.id.lvsinhvien),
                 rootView.findViewById(R.id.sv_0)
         );
         txtLop = rootView.findViewById(R.id.txtlop);

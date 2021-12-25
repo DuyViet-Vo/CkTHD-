@@ -72,4 +72,13 @@ public interface APIServices {
 
     @POST("khoa/get")
     Call<Khoa> GetKhoaById(@Query("id") int id);
+
+    @POST("nganh/insert")
+    Call<Nganh> InsertNganh(@Body Nganh nganh);
+
+    @POST("nganh/update")
+    Call<Nganh> UpdateNganh(@Body Nganh nganh);
+
+    @POST("nganh/delete")
+    Call<Integer> DeleteNganh(@Query("id") int id);
 }

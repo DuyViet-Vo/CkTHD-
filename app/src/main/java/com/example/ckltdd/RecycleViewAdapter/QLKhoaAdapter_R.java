@@ -93,6 +93,8 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
                 if (!err.isEmpty()) return;
 
                 khoa.setTenkhoa(ten_khoa.getText().toString());
+                notifyDataSetChanged();
+                QLKhoa.notification.Notify("Sửa thành công!", "success");
                 Update(khoa, sua);
             });
         });
@@ -120,12 +122,13 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
             });
 
             xoaBtn.setOnClickListener(view1 -> {
+                listKhoa.remove(khoa);
+                notifyDataSetChanged();
+                QLKhoa.notification.Notify("Xoá thành công!", "success");
                 Call<Integer> call = APIUtils.getAPIService().DeleteKhoa(khoa.getId());
                 call.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        LoadDSKhoa();
-                        QLKhoa.notification.Notify("Xóa thành công", "success");
                     }
 
                     @Override
@@ -143,8 +146,6 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
         call.enqueue(new Callback<Khoa>() {
             @Override
             public void onResponse(Call<Khoa> call, Response<Khoa> response) {
-                LoadDSKhoa();
-                QLKhoa.notification.Notify("Sửa thành công!", "success");
             }
 
             @Override
@@ -185,21 +186,6 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
             btnSua = itemView.findViewById(R.id.btnSua);
             btnXoa = itemView.findViewById(R.id.btnXoa);
         }
-    }
-    private void LoadDSKhoa() {
-        Call<List<Khoa>> call = APIUtils.getAPIService().LoadDSKhoa();
-        call.enqueue(new Callback<List<Khoa>>() {
-            @Override
-            public void onResponse(Call<List<Khoa>> call, Response<List<Khoa>> response) {
-                listKhoa = response.body();
-                notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<List<Khoa>> call, Throwable t) {
-                System.out.println(t.getMessage());
-            }
-        });
     }
 
 }
