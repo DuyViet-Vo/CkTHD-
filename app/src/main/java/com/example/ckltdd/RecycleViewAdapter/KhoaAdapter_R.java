@@ -5,20 +5,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ckltdd.Fragment.QLSinhVien;
 import com.example.ckltdd.HandleLoadEmtpy;
 import com.example.ckltdd.Khoa;
+import com.example.ckltdd.Nganh;
 import com.example.ckltdd.R;
 import com.example.ckltdd.Retrofit2.APIServices;
 import com.example.ckltdd.SinhVien;
 import com.example.ckltdd.sinhVienAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,12 +35,21 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
     private ListView listViewsinhvien;
     private APIServices mAPIService;
     private sinhVienAdapter svAdapter;
+    private QLNganhAdapter_R qlNganhAdapter_r;
     private HandleLoadEmtpy handleLoadEmtpy;
     private TextView txtLop;
 
     public KhoaAdapter_R(List<Khoa> listKhoa) {
         this.listKhoa = listKhoa;
         selected = listKhoa.get(0).getId();
+    }
+
+    public QLNganhAdapter_R getQlNganhAdapter_r() {
+        return qlNganhAdapter_r;
+    }
+
+    public void setQlNganhAdapter_r(QLNganhAdapter_R qlNganhAdapter_r) {
+        this.qlNganhAdapter_r = qlNganhAdapter_r;
     }
 
     public int getSelected() {
@@ -114,14 +127,20 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
         holder.khoaBtn.setOnClickListener(view -> {
             selected = khoa.getId();
             notifyDataSetChanged();
-            QLSinhVien.khoaId = selected;
-            QLSinhVien.nganhId = 0;
-            QLSinhVien.lopId = 0;
-            QLSinhVien.nganhLoc = "";
-            QLSinhVien.lopLoc = "";
-            changeListStudents(khoa.getId());
-            if (QLSinhVien.khoaId == 0) txtLop.setText("");
-            else txtLop.setText("Tất cả");
+            if (svAdapter != null) {
+                QLSinhVien.khoaId = selected;
+                QLSinhVien.nganhId = 0;
+                QLSinhVien.lopId = 0;
+                QLSinhVien.nganhLoc = "";
+                QLSinhVien.lopLoc = "";
+                changeListStudents(khoa.getId());
+                if (QLSinhVien.khoaId == 0) txtLop.setText("");
+                else txtLop.setText("Tất cả");
+            }
+
+            if (qlNganhAdapter_r != null) {
+                LoadDSNGanhByKhoaId(khoa.getId());
+            }
         });
     }
 
@@ -142,6 +161,27 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
             @Override
             public void onFailure(Call<List<SinhVien>> call, Throwable t) {
                 System.out.println(t.getMessage());
+            }
+        });
+    }
+
+    private void LoadDSNGanhByKhoaId(int khoaId) {
+        handleLoadEmtpy.empty(1);
+        handleLoadEmtpy.HandleLoadAnimation_r(true);
+        Call<ArrayList<Nganh>> call = mAPIService.LoadDSNganhByKhoaId(khoaId);
+        call.enqueue(new Callback<ArrayList<Nganh>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Nganh>> call, Response<ArrayList<Nganh>> response) {
+                List<Nganh> list = response.body();
+                qlNganhAdapter_r.setListNganh(list);
+                qlNganhAdapter_r.notifyDataSetChanged();
+                handleLoadEmtpy.HandleLoadAnimation_r(false);
+                handleLoadEmtpy.empty(list.size());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Nganh>> call, Throwable t) {
+
             }
         });
     }

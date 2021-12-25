@@ -10,6 +10,10 @@ public class Nganh {
         this.tenNganh = tenNganh;
     }
 
+    public Nganh(String tenNganh) {
+        this.tenNganh = tenNganh;
+    }
+
     public Nganh(int id, String tenNganh) {
         this.id = id;
         this.tenNganh = tenNganh;

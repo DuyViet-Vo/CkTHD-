@@ -20,6 +20,12 @@ public class HandleLoadEmtpy {
         this.empty = empty;
     }
 
+    public HandleLoadEmtpy(GifImageView load, RecyclerView recyclerView, TextView empty) {
+        this.load = load;
+        this.recyclerView = recyclerView;
+        this.empty = empty;
+    }
+
     public RecyclerView getRecyclerView() {
         return recyclerView;
     }
@@ -64,6 +70,17 @@ public class HandleLoadEmtpy {
         else {
             load.getLayoutParams().height = 0;
             listView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        }
+    }
+
+    public void HandleLoadAnimation_r(boolean isLoad) {
+        if (isLoad)  {
+            load.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            recyclerView.getLayoutParams().height = 0;
+        }
+        else {
+            load.getLayoutParams().height = 0;
+            recyclerView.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
         }
     }
 

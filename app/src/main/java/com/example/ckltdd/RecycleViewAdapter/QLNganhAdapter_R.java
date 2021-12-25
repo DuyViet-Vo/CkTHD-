@@ -44,6 +44,14 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
         this.context = context;
     }
 
+    public List<Nganh> getListNganh() {
+        return listNganh;
+    }
+
+    public void setListNganh(List<Nganh> listNganh) {
+        this.listNganh = listNganh;
+    }
+
     @NonNull
     @Override
     public QLNganhHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

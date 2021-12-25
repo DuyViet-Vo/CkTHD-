@@ -135,7 +135,7 @@ public class QLSinhVien extends Fragment {
 
         handleLoadEmtpy = new HandleLoadEmtpy(
                 rootView.findViewById(R.id.sv_load_sv),
-                rootView.findViewById(R.id.lvsinhvien),
+                (ListView) rootView.findViewById(R.id.lvsinhvien),
                 rootView.findViewById(R.id.sv_0)
         );
         txtLop = rootView.findViewById(R.id.txtlop);
