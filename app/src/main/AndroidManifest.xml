@@ -16,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CKLTDD">
         <activity
+            android:name=".TimKiem"
+            android:exported="true"
+            android:windowSoftInputMode="stateVisible"/>
+        <activity
             android:name=".sua"
             android:exported="true" />
         <activity
@@ -36,6 +40,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true" />
+
         <activity
             android:name=".DangNhapActivity"
             android:exported="true">

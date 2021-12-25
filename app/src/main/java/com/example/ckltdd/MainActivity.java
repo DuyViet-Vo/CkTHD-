@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -53,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtLop;
     private Button notification;
     private CardView card_notification;
+    private ImageButton searchBtn;
 
     private KhoaAdapter_R khoaAdapter_r;
     private RecyclerView rv_khoa;
@@ -66,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public static String nganhLoc, lopLoc;
     private int REQUEST_CODE = 111;
     private int REQUEST_CODE_EDIT = 112;
-    private HandlerThread handlerThread = new HandlerThread("background-thread");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
         txtLop = findViewById(R.id.txtlop);
         notification = findViewById(R.id.notification);
         card_notification = findViewById(R.id.card_notification);
+
+        searchBtn = findViewById(R.id.main_search);
+        searchBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, TimKiem.class);
+            startActivity(intent);
+        });
 
         //them
         fab_them = (FloatingActionButton) findViewById(R.id.fAddBtn) ;
@@ -91,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
         button_loc.setOnClickListener(view -> {
             LocDialog();
         });
-
 
         LoadStudents();
 
@@ -111,14 +117,31 @@ public class MainActivity extends AppCompatActivity {
             notification.setBackgroundColor(Color.parseColor("#6CD06A"));
             card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
-            handlerThread.start();
-            final Handler handler = new Handler(handlerThread.getLooper());
-            handler.postDelayed(new Runnable() {
-                @Override public void run() {
-                    card_notification.getLayoutParams().height = 0;
-                    handlerThread.quitSafely();
-                }
-            }, 2000);
+            new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        card_notification.getLayoutParams().height = 0;
+                    }
+            }, 3000);
+        }
+
+        if(requestCode == REQUEST_CODE_EDIT && resultCode == RESULT_OK && data != null) {
+            lopId = data.getIntExtra("idLop", 0);
+            lopLoc = data.getStringExtra("tenLop");
+            txtLop.setText(lopLoc);
+            khoaAdapter_r.setSelected(data.getIntExtra("idKhoa", 0));
+            khoaAdapter_r.notifyDataSetChanged();
+            LoadStudentsByClassId(khoaId, nganhId, lopId);
+
+            notification.setText("Sửa thành công!");
+            notification.setBackgroundColor(Color.parseColor("#6CD06A"));
+            card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            card_notification.getLayoutParams().height = 0;
+                        }
+            }, 3000);
         }
 
 
@@ -179,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
             txtLop.setText("");
         });
     }
+
+
 
     private void LoadStudentsByClassId(int khoaId, int nganhId, int lopId) {
         handleLoadEmtpy.empty(1);
@@ -362,6 +387,11 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this, LinearLayoutManager.HORIZONTAL, false);
                 rv_khoa.setLayoutManager(linearLayoutManager);
                 rv_khoa.setAdapter(khoaAdapter_r);
+
+                svAdapter.setHandleLoadEmtpy(handleLoadEmtpy);
+                svAdapter.setNotification(notification);
+                svAdapter.setKhoaAdapter_r(khoaAdapter_r);
+                svAdapter.setCard_notification(card_notification);
             }
 
             @Override
