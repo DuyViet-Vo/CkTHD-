@@ -72,7 +72,7 @@ public class QLNganh extends Fragment {
     private KhoaAdapter_R khoaAdapter_r;
     private RecyclerView rv_khoa;
     private HandleLoadEmtpy handleLoadEmtpy;
-    private int khoaSelected = 0;
+    public static int khoaSelected = 0;
 
     public QLNganh() {
         // Required empty public constructor
@@ -215,7 +215,9 @@ public class QLNganh extends Fragment {
         call.enqueue(new Callback<Nganh>() {
             @Override
             public void onResponse(Call<Nganh> call, Response<Nganh> response) {
-                LoadDSKhoa();
+                LoadDSNGanhByKhoaId2(khoaSelected);
+                khoaAdapter_r.setSelected(khoaSelected);
+                khoaAdapter_r.notifyDataSetChanged();
                 notification.Notify("Thêm thành công!", "success");
             }
 
@@ -273,6 +275,27 @@ public class QLNganh extends Fragment {
         });
     }
 
+    private void LoadDSNGanhByKhoaId2(int khoaId) {
+        handleLoadEmtpy.empty(1);
+        handleLoadEmtpy.HandleLoadAnimation_r(true);
+        Call<ArrayList<Nganh>> call = mAPIService.LoadDSNganhByKhoaId(khoaId);
+        call.enqueue(new Callback<ArrayList<Nganh>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Nganh>> call, Response<ArrayList<Nganh>> response) {
+                List<Nganh> list = response.body();
+                qlNganhAdapter_r.setListNganh(list);
+                qlNganhAdapter_r.notifyDataSetChanged();
+                handleLoadEmtpy.HandleLoadAnimation_r(false);
+                handleLoadEmtpy.empty(list.size());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Nganh>> call, Throwable t) {
+
+            }
+        });
+    }
+
     private void LoadDSKhoa() {
         Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
         call.enqueue(new Callback<List<Khoa>>() {
@@ -285,9 +308,13 @@ public class QLNganh extends Fragment {
                 khoaAdapter_r.setmAPIService(mAPIService);
                 khoaAdapter_r.setHandleLoadEmtpy(handleLoadEmtpy);
                 khoaAdapter_r.setQlNganhAdapter_r(qlNganhAdapter_r);
+
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
                 rv_khoa.setLayoutManager(linearLayoutManager);
                 rv_khoa.setAdapter(khoaAdapter_r);
+
+                qlNganhAdapter_r.setKhoaAdapter_r(khoaAdapter_r);
+                qlNganhAdapter_r.setHandleLoadEmtpy(handleLoadEmtpy);
             }
 
             @Override
