@@ -1,56 +1,22 @@
 package com.example.ckltdd;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.StrictMode;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.ckltdd.Fragment.QLKhoa;
 import com.example.ckltdd.Fragment.QLSinhVien;
-import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
-import com.example.ckltdd.Retrofit2.APIServices;
-import com.example.ckltdd.Retrofit2.APIUtils;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-
-import android.widget.ArrayAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     public static final int FRAGMENT_QLSV = 1;

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +22,11 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +35,7 @@ import com.example.ckltdd.Khoa;
 import com.example.ckltdd.Lop;
 import com.example.ckltdd.MainActivity;
 import com.example.ckltdd.Nganh;
+import com.example.ckltdd.Notification;
 import com.example.ckltdd.R;
 import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
 import com.example.ckltdd.Retrofit2.APIServices;
@@ -65,7 +69,7 @@ public class QLSinhVien extends Fragment {
     private TextView txtLop;
     private Button notification;
     private CardView card_notification;
-
+    public static Notification mNotification;
 
     private KhoaAdapter_R khoaAdapter_r;
     private RecyclerView rv_khoa;
@@ -138,6 +142,8 @@ public class QLSinhVien extends Fragment {
         notification = rootView.findViewById(R.id.notification);
         card_notification = rootView.findViewById(R.id.card_notification);
 
+        mNotification = new Notification(notification, card_notification);
+
         //them
         fab_them = (FloatingActionButton) rootView.findViewById(R.id.fAddBtn) ;
         fab_them.setOnClickListener(new View.OnClickListener() {
@@ -166,16 +172,7 @@ public class QLSinhVien extends Fragment {
             khoaAdapter_r.notifyDataSetChanged();
             LoadStudentsByClassId(khoaId, nganhId, lopId);
 
-            notification.setText("Thêm thành công!");
-            notification.setBackgroundColor(Color.parseColor("#6CD06A"));
-            card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-            new android.os.Handler().postDelayed(
-                    new Runnable() {
-                        public void run() {
-                            card_notification.getLayoutParams().height = 0;
-                        }
-                    }, 3000);
+            mNotification.Notify("Thêm thành công!", "success");
         }
 
         if(requestCode == REQUEST_CODE_EDIT &&  data != null) {
@@ -186,15 +183,7 @@ public class QLSinhVien extends Fragment {
             khoaAdapter_r.notifyDataSetChanged();
             LoadStudentsByClassId(khoaId, nganhId, lopId);
 
-            notification.setText("Sửa thành công!");
-            notification.setBackgroundColor(Color.parseColor("#6CD06A"));
-            card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            new android.os.Handler().postDelayed(
-                    new Runnable() {
-                        public void run() {
-                            card_notification.getLayoutParams().height = 0;
-                        }
-                    }, 3000);
+            mNotification.Notify("Sửa thành công!", "success");
         }
 
 
@@ -442,9 +431,7 @@ public class QLSinhVien extends Fragment {
                 rv_khoa.setAdapter(khoaAdapter_r);
 
                 svAdapter.setHandleLoadEmtpy(handleLoadEmtpy);
-                svAdapter.setNotification(notification);
                 svAdapter.setKhoaAdapter_r(khoaAdapter_r);
-                svAdapter.setCard_notification(card_notification);
             }
 
             @Override

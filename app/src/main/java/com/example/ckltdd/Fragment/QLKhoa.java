@@ -1,23 +1,41 @@
 package com.example.ckltdd.Fragment;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ckltdd.Khoa;
+import com.example.ckltdd.Notification;
 import com.example.ckltdd.R;
 import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
 import com.example.ckltdd.RecycleViewAdapter.QLKhoaAdapter_R;
 import com.example.ckltdd.Retrofit2.APIServices;
 import com.example.ckltdd.Retrofit2.APIUtils;
+import com.example.ckltdd.ValidData;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -45,7 +63,9 @@ public class QLKhoa extends Fragment {
     private QLKhoaAdapter_R qlKhoaAdapter_r;
     private RecyclerView qlkhoa_rv;
     private View getView;
-
+    private FloatingActionButton fAddBtn;
+    private Dialog them;
+    public static Notification notification;
     public QLKhoa() {
         // Required empty public constructor
     }
@@ -83,10 +103,86 @@ public class QLKhoa extends Fragment {
         getView = inflater.inflate(R.layout.fragment_q_l_khoa, container, false);
 
         qlkhoa_rv = getView.findViewById(R.id.rv_qlkhoa);
+        fAddBtn = getView.findViewById(R.id.fAddBtn);
         LoadDSKhoa();
+
+        notification = new Notification(
+                getView.findViewById(R.id.notification),
+                getView.findViewById(R.id.card_notification)
+        );
+
+        fAddBtn.setOnClickListener(view -> {
+            ThemKhoaDialog();
+        });
 
         return getView;
     }
+
+    private void ThemKhoaDialog() {
+        them = new Dialog(getContext());
+        them.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        them.setContentView(R.layout.dialog_them_khoa);
+
+        Window window = them.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        WindowManager.LayoutParams windowsAttributes = window.getAttributes();
+        windowsAttributes.gravity = Gravity.CENTER;
+        window.setAttributes(windowsAttributes);
+
+        them.show();
+
+        EditText them_khoa = them.findViewById(R.id.them_khoa);
+        TextView valid_ten = them.findViewById(R.id.valid_ten);
+        Button btnHuy = them.findViewById(R.id.btnHuy),
+                btnThem = them.findViewById((R.id.btnThem));
+
+        btnHuy.setOnClickListener(view -> {
+            them.cancel();
+        });
+
+        btnThem.setOnClickListener(view -> {
+            String err = ValidData.IsEmpty(them_khoa.getText().toString());
+            ValidAction(them_khoa, valid_ten, err);
+
+            if (!err.isEmpty()) return;
+
+            Khoa khoa = new Khoa(them_khoa.getText().toString());
+            Them(khoa);
+        });
+    }
+
+    private void Them(Khoa khoa) {
+        Call<Khoa> call = mAPIService.InsertKhoa(khoa);
+        call.enqueue(new Callback<Khoa>() {
+            @Override
+            public void onResponse(Call<Khoa> call, Response<Khoa> response) {
+                LoadDSKhoa();
+                notification.Notify("Thêm thành công!", "success");
+            }
+
+            @Override
+            public void onFailure(Call<Khoa> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+        them.cancel();
+    }
+
+
+
+    private void ValidAction(EditText editText, TextView textView, String check) {
+        if (!check.isEmpty()) {
+            editText.setBackground(getResources().getDrawable(R.drawable.bg_invalid));
+            textView.setText(check);
+            return;
+        }
+
+        editText.setBackground(getResources().getDrawable(R.drawable.shape_thongtin));
+        textView.setText("");
+    }
+
 
     private void LoadDSKhoa() {
         Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
@@ -95,7 +191,7 @@ public class QLKhoa extends Fragment {
             public void onResponse(Call<List<Khoa>> call, Response<List<Khoa>> response) {
                 List<Khoa> list = response.body();
 
-                qlKhoaAdapter_r = new QLKhoaAdapter_R(list);
+                qlKhoaAdapter_r = new QLKhoaAdapter_R(list, getContext());
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 qlkhoa_rv.setLayoutManager(linearLayoutManager);
                 qlkhoa_rv.setAdapter(qlKhoaAdapter_r);
@@ -108,6 +204,5 @@ public class QLKhoa extends Fragment {
                 System.out.println(t.getMessage());
             }
         });
-
     }
 }

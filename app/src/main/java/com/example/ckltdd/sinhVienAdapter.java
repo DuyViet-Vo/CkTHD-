@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -51,8 +53,6 @@ public class sinhVienAdapter extends BaseAdapter {
     private List<SinhVien> sinhVienList;
     private int REQUEST_CODE_EDIT = 112;
     private HandleLoadEmtpy handleLoadEmtpy;
-    private Button notification;
-    private CardView card_notification;
     private KhoaAdapter_R khoaAdapter_r;
 
     public KhoaAdapter_R getKhoaAdapter_r() {
@@ -71,13 +71,6 @@ public class sinhVienAdapter extends BaseAdapter {
         this.fragment = fragment;
     }
 
-    public CardView getCard_notification() {
-        return card_notification;
-    }
-
-    public void setCard_notification(CardView card_notification) {
-        this.card_notification = card_notification;
-    }
 
     public sinhVienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
         this.context = context;
@@ -100,14 +93,6 @@ public class sinhVienAdapter extends BaseAdapter {
 
     public void setHandleLoadEmtpy(HandleLoadEmtpy handleLoadEmtpy) {
         this.handleLoadEmtpy = handleLoadEmtpy;
-    }
-
-    public Button getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Button notification) {
-        this.notification = notification;
     }
 
     public List<SinhVien> getSinhVienList() {
@@ -205,16 +190,7 @@ public class sinhVienAdapter extends BaseAdapter {
                         khoaAdapter_r.notifyDataSetChanged();
                         LoadStudentsByClassId(QLSinhVien.khoaId, QLSinhVien.nganhId, QLSinhVien.lopId);
 
-                        notification.setText("Xóa thành công!");
-                        notification.setBackgroundColor(Color.parseColor("#6CD06A"));
-                        card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        card_notification.getLayoutParams().height = 0;
-                                    }
-                                }, 3000);
+                        QLSinhVien.mNotification.Notify("Xóa thành công", "success");
                     }
 
                     @Override

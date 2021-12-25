@@ -1,24 +1,44 @@
 package com.example.ckltdd.RecycleViewAdapter;
 
+import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ckltdd.Fragment.QLKhoa;
 import com.example.ckltdd.Khoa;
 import com.example.ckltdd.R;
+import com.example.ckltdd.Retrofit2.APIUtils;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoaHolder>{
     private List<Khoa> listKhoa;
+    private Context context;
 
     public QLKhoaAdapter_R(List<Khoa> listKhoa) {
         this.listKhoa = listKhoa;
+    }
+
+    public QLKhoaAdapter_R(List<Khoa> listKhoa, Context context) {
+        this.listKhoa = listKhoa;
+        this.context = context;
     }
 
     @NonNull
@@ -35,6 +55,46 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
             return;
 
         holder.tv_ten.setText(khoa.getTenkhoa());
+
+        holder.btnXoa.setOnClickListener(view -> {
+            Dialog xoa = new Dialog(context);
+            xoa.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            xoa.setContentView(R.layout.dialog_xoa);
+
+            Window window = xoa.getWindow();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+            WindowManager.LayoutParams windowsAttributes = window.getAttributes();
+            windowsAttributes.gravity = Gravity.CENTER;
+            window.setAttributes(windowsAttributes);
+
+            xoa.show();
+
+            Button huy = xoa.findViewById(R.id.d_huy);
+            Button xoaBtn = xoa.findViewById(R.id.d_xoa);
+
+            huy.setOnClickListener(view1 -> {
+                xoa.cancel();
+            });
+
+            xoaBtn.setOnClickListener(view1 -> {
+                Call<Integer> call = APIUtils.getAPIService().DeleteKhoa(khoa.getId());
+                call.enqueue(new Callback<Integer>() {
+                    @Override
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        LoadDSKhoa();
+                        QLKhoa.notification.Notify("Xóa thành công", "success");
+                    }
+
+                    @Override
+                    public void onFailure(Call<Integer> call, Throwable t) {
+
+                    }
+                });
+                xoa.cancel();
+            });
+        });
     }
 
     @Override
@@ -57,4 +117,20 @@ public class QLKhoaAdapter_R extends RecyclerView.Adapter<QLKhoaAdapter_R.QLKhoa
             btnXoa = itemView.findViewById(R.id.btnXoa);
         }
     }
+    private void LoadDSKhoa() {
+        Call<List<Khoa>> call = APIUtils.getAPIService().LoadDSKhoa();
+        call.enqueue(new Callback<List<Khoa>>() {
+            @Override
+            public void onResponse(Call<List<Khoa>> call, Response<List<Khoa>> response) {
+                listKhoa = response.body();
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<List<Khoa>> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
 }

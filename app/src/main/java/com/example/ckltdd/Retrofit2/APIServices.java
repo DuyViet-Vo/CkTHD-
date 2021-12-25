@@ -61,4 +61,15 @@ public interface APIServices {
     @POST("sinhvien/search")
     Call<List<SinhVien>> TimKiem(@Query("tuKhoa") String tuKhoa);
 
+    @POST("khoa/insert")
+    Call<Khoa> InsertKhoa(@Body Khoa khoa);
+
+    @POST("khoa/update")
+    Call<Khoa> UpdateKhoa(@Body Khoa khoa);
+
+    @POST("khoa/delete")
+    Call<Integer> DeleteKhoa(@Query("id") int id);
+
+    @POST("khoa/get")
+    Call<Khoa> GetKhoaById(@Query("id") int id);
 }
