@@ -23,4 +23,10 @@
         <item name="android:textColor">@color/c_374D6B</item>
         <item name="android:fontFamily">@font/bold</item>
     </style>
+
+    <style name="Style_TextView">
+        <item name="fontFamily">@font/bold</item>
+        <item name="android:textSize">28dp</item>
+        <item name="android:paddingVertical">10dp</item>
+    </style>
 </resources>

@@ -13,77 +13,52 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bold"
-        android:text="Bộ lọc"
+        android:text="Thêm mới"
         android:textColor="@color/c_374D6B"
         android:textSize="32dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxStrokeWidth="0dp"
-        android:scrollIndicators="none"
-        android:background="@drawable/bg_dropdown"
-        app:endIconDrawable="@drawable/ic_round_arrow_drop_down"
-        android:paddingBottom="6dp"
-        android:hint="Ngành"
-        android:overScrollMode="never"
-        >
-        <AutoCompleteTextView
-            android:id="@+id/nganhSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:background="#F4F6FC"
-            android:inputType="none"
-            android:textColor="@color/c_374D6B"
-            android:fontFamily="@font/bold"
-            android:overScrollMode="never"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginTop="28dp"
+        android:orientation="vertical">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:boxCornerRadiusBottomStart="10dp"
-        app:boxCornerRadiusTopStart="10dp"
-        app:boxCornerRadiusTopEnd="10dp"
-        app:boxCornerRadiusBottomEnd="10dp"
-        app:boxStrokeWidth="0dp"
-        android:scrollIndicators="none"
-        android:background="@drawable/bg_dropdown"
-        app:endIconDrawable="@drawable/ic_round_arrow_drop_down"
-        android:paddingBottom="6dp"
-        android:hint="Lớp"
-        android:overScrollMode="never"
-        >
-        <AutoCompleteTextView
-            android:id="@+id/lopSpinner"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bold"
+            android:text="Tên khoa"
+            android:textColor="#703E5370"
+            android:textSize="16dp" />
+
+        <EditText
+            android:id="@+id/them_khoa"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_thongtin"
+            android:fontFamily="@font/bold"
+            android:hint="Tên khoa mới"
+            android:paddingHorizontal="20dp"
+            android:textColor="@color/c_374D6B"
+            android:textColorHint="#403E5370"
+            android:maxLength="13"
+            android:textSize="17sp" />
+        <TextView
+            android:id="@+id/valid_ten"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:background="#F4F6FC"
-            android:inputType="none"
-            android:textColor="@color/c_374D6B"
-            android:fontFamily="@font/bold"
-            android:overScrollMode="never"
+            android:layout_marginTop="2dp"
+            android:textSize="12sp"
+            android:textColor="#FF7373"
             />
-    </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="30dp">
         <View
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -118,15 +93,16 @@
             app:cardElevation="0dp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnLoc"
-                android:layout_width="90dp"
+                android:id="@+id/btnThem"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/ripple_btn"
                 android:backgroundTint="#FF77A7"
                 android:fontFamily="@font/bold"
                 android:paddingBottom="6dp"
-                android:text="Lọc"
+                android:paddingHorizontal="12dp"
+                android:text="Thêm"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

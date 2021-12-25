@@ -52,15 +52,23 @@
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_chi_tiet.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_image_picker.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_qlkhoa.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_sua.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_them.xml" value="0.22" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_them_sua.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_tim_kiem.xml" value="0.25" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/dialog_loc.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/dialog_them_khoa.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/dialog_xoa.xml" value="0.25" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/fragment_q_l_khoa.xml" value="0.19010416666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/fragment_q_l_sinh_vien.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_boloc.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_ql_khoa.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_search.xml" value="0.25" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_sinhvien.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/layou_dialog_feeback.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/nav_header.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/menu/drawer_view.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/QLSinhVien/app/src/main/res/drawable/bg_dropdown.xml" value="0.146875" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/QLSinhVien/app/src/main/res/drawable/bg_loc_dialog.xml" value="0.25390625" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/QLSinhVien/app/src/main/res/drawable/ic_delete.xml" value="0.146875" />

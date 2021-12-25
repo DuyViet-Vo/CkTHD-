@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,8 +26,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.ckltdd.Fragment.QLSinhVien;
 import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
 import com.example.ckltdd.Retrofit2.APIUtils;
 
@@ -44,12 +48,11 @@ import retrofit2.Response;
 
 public class sinhVienAdapter extends BaseAdapter {
     private Context context;
+    private Fragment fragment;
     private int layout;
     private List<SinhVien> sinhVienList;
     private int REQUEST_CODE_EDIT = 112;
     private HandleLoadEmtpy handleLoadEmtpy;
-    private Button notification;
-    private CardView card_notification;
     private KhoaAdapter_R khoaAdapter_r;
 
     public KhoaAdapter_R getKhoaAdapter_r() {
@@ -60,13 +63,14 @@ public class sinhVienAdapter extends BaseAdapter {
         this.khoaAdapter_r = khoaAdapter_r;
     }
 
-    public CardView getCard_notification() {
-        return card_notification;
+    public Fragment getFragment() {
+        return fragment;
     }
 
-    public void setCard_notification(CardView card_notification) {
-        this.card_notification = card_notification;
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
+
 
     public sinhVienAdapter(Context context, int layout, List<SinhVien> sinhVienList) {
         this.context = context;
@@ -89,14 +93,6 @@ public class sinhVienAdapter extends BaseAdapter {
 
     public void setHandleLoadEmtpy(HandleLoadEmtpy handleLoadEmtpy) {
         this.handleLoadEmtpy = handleLoadEmtpy;
-    }
-
-    public Button getNotification() {
-        return notification;
-    }
-
-    public void setNotification(Button notification) {
-        this.notification = notification;
     }
 
     public List<SinhVien> getSinhVienList() {
@@ -160,7 +156,7 @@ public class sinhVienAdapter extends BaseAdapter {
         btnSua.setOnClickListener(view -> {
             Intent intent = new Intent(context, sua.class);
             intent.putExtra("idSV", sinhvien.getId());
-            ((Activity) context).startActivityForResult(intent,REQUEST_CODE_EDIT);
+            fragment.startActivityForResult(intent,REQUEST_CODE_EDIT);
         });
 
         btnXoa.setOnClickListener(view -> {
@@ -190,20 +186,11 @@ public class sinhVienAdapter extends BaseAdapter {
                 call.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        khoaAdapter_r.setSelected(MainActivity.khoaId);
+                        khoaAdapter_r.setSelected(QLSinhVien.khoaId);
                         khoaAdapter_r.notifyDataSetChanged();
-                        LoadStudentsByClassId(MainActivity.khoaId, MainActivity.nganhId, MainActivity.lopId);
+                        LoadStudentsByClassId(QLSinhVien.khoaId, QLSinhVien.nganhId, QLSinhVien.lopId);
 
-                        notification.setText("Xóa thành công!");
-                        notification.setBackgroundColor(Color.parseColor("#6CD06A"));
-                        card_notification.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
-
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        card_notification.getLayoutParams().height = 0;
-                                    }
-                                }, 3000);
+                        QLSinhVien.mNotification.Notify("Xóa thành công", "success");
                     }
 
                     @Override
