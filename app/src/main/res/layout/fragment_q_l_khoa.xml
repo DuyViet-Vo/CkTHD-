@@ -52,10 +52,10 @@
                     android:textColor="@color/c_374D6B"
                     android:layout_centerHorizontal="true"/>
 
-                <ListView
-                    android:id="@+id/lvsinhvien"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_qlkhoa"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_below="@id/tieude"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"

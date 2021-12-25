@@ -35,6 +35,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ckltdd.Fragment.QLKhoa;
 import com.example.ckltdd.Fragment.QLSinhVien;
 import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
 import com.example.ckltdd.Retrofit2.APIServices;
@@ -52,16 +53,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int FRAGMENT_QLSV = 1;
-    private static final int FRAGMENT_QLK = 2;
-    private static final int FRAGMENT_QLL = 3;
-    private static final int FRAGMENT_QLN = 4;
+    public static final int FRAGMENT_QLSV = 1;
+    public static final int FRAGMENT_QLK = 2;
+    public static final int FRAGMENT_QLL = 3;
+    public static final int FRAGMENT_QLN = 4;
 
     private ImageButton searchBtn, menuBtn, menu_back;
     private DrawerLayout mDrawerLayout;
     private NavigationView navigationView;
 
-    private int currentFragment = FRAGMENT_QLSV;
+    public int currentFragment = FRAGMENT_QLSV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,23 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         menuItem.setChecked(true);
                         mDrawerLayout.closeDrawer(GravityCompat.START);
+
+                        int id = menuItem.getItemId();
+
+                        if (id == R.id.nav_khoa) {
+                            if (FRAGMENT_QLK != currentFragment) {
+                                replaceFragment(new QLKhoa());
+                                currentFragment = FRAGMENT_QLK;
+                            }
+                        }
+
+                        if (id == R.id.nav_sv) {
+                            if (FRAGMENT_QLSV != currentFragment) {
+                                replaceFragment(new QLSinhVien());
+                                currentFragment = FRAGMENT_QLSV;
+                            }
+                        }
+
                         return true;
                     }
                 });
