@@ -109,7 +109,10 @@ public class sinhVienAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return sinhVienList.size();
+        if(sinhVienList != null) {
+            return sinhVienList.size();
+        }
+        return 0;
     }
 
     @Override
@@ -129,9 +132,9 @@ public class sinhVienAdapter extends BaseAdapter {
         //anh xa view
         TextView txttensv=(TextView) convertView.findViewById(R.id.txtten);
         TextView txtmasinhvien=(TextView) convertView.findViewById(R.id.txtmasv);
+        RelativeLayout relativeLayout = convertView.findViewById(R.id.item_sv);
         ImageView imagehinhcanhan = (ImageView) convertView.findViewById(R.id.imagehinh);
         GifImageView avt_gifLoad = convertView.findViewById(R.id.avt_gifLoad);
-        RelativeLayout relativeLayout = convertView.findViewById(R.id.item_sv);
         ImageButton btnSua = convertView.findViewById(R.id.btnsua);
         ImageButton btnXoa = convertView.findViewById(R.id.btnxoa);
 

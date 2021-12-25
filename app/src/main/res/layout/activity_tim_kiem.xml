@@ -1,9 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="15dp"
+    android:windowSoftInputMode="stateVisible"
     tools:context=".TimKiem">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        app:cardCornerRadius="50pt"
+        android:layout_marginLeft="8dp"
+        app:cardElevation="0dp">
+
+        <ImageButton
+            android:id="@+id/tk_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:paddingHorizontal="20dp"
+            android:textColorHint="#403E5370"
+            android:fontFamily="@font/bold"
+            android:background="@drawable/ripple_btn"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_round_back_small" />
+    </androidx.cardview.widget.CardView>
+
+    <EditText
+        android:id="@+id/search_ip"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@id/card_back"
+        android:background="@color/white"
+        android:drawableEnd="@drawable/ic_akar_icons_search_small"
+        android:fontFamily="@font/bold"
+        android:hint="Tìm kiếm sinh viên"
+        android:paddingStart="10dp"
+        android:paddingEnd="24dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/c_374D6B"
+        android:textColorHint="#60374D6B"
+        android:textSize="20dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="#EEEEEE"
+        android:layout_below="@id/search_ip"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/search_ip"
+        android:layout_marginTop="30dp" />
+
+    <TextView
+        android:id="@+id/sv_empty"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_below="@id/search_ip"
+        android:text="Không tìm thấy sinh viên nào!"
+        android:textSize="20sp"
+        android:layout_marginTop="300dp"
+        android:fontFamily="@font/semibold"
+        android:textColor="@color/c_374D6B"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>

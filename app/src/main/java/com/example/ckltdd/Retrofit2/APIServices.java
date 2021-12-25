@@ -58,4 +58,7 @@ public interface APIServices {
     @POST("sinhvien/delete")
     Call<Integer> DeleteSV(@Query("id") String id);
 
+    @POST("sinhvien/search")
+    Call<List<SinhVien>> TimKiem(@Query("tuKhoa") String tuKhoa);
+
 }

@@ -38,7 +38,12 @@
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/bg_spinner_disabled.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/bg_spinner_disabled_invalid.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/bg_spinner_invalid.xml" value="0.2203125" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ic_akar_icons_search.xml" value="0.2203125" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ic_akar_icons_search_small.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ic_round_arrow_drop_down_disabled.xml" value="0.2203125" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ic_round_back-s.xml" value="0.2203125" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ic_round_back.xml" value="0.2203125" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ic_round_back_small.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ripple_btn.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/ripple_date_btn.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/shape_thongtin.xml" value="0.2203125" />
@@ -46,13 +51,15 @@
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/drawable/shapecustombutonlogin.xml" value="0.2203125" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_chi_tiet.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_image_picker.xml" value="0.20416666666666666" />
-        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_sua.xml" value="0.19010416666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_them.xml" value="0.22" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_them_sua.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/activity_tim_kiem.xml" value="0.25" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/dialog_loc.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/dialog_xoa.xml" value="0.25" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_boloc.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_search.xml" value="0.25" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/CK/app/src/main/res/layout/item_sinhvien.xml" value="0.20416666666666666" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/QLSinhVien/app/src/main/res/drawable/bg_dropdown.xml" value="0.146875" />
         <entry key="..\:/Users/thien/AndroidStudioProjects/TH_Android/QLSinhVien/app/src/main/res/drawable/bg_loc_dialog.xml" value="0.25390625" />

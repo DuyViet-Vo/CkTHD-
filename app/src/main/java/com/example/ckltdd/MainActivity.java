@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtLop;
     private Button notification;
     private CardView card_notification;
+    private ImageButton searchBtn;
 
     private KhoaAdapter_R khoaAdapter_r;
     private RecyclerView rv_khoa;
@@ -79,6 +80,12 @@ public class MainActivity extends AppCompatActivity {
         notification = findViewById(R.id.notification);
         card_notification = findViewById(R.id.card_notification);
 
+        searchBtn = findViewById(R.id.main_search);
+        searchBtn.setOnClickListener(view -> {
+            Intent intent = new Intent(this, TimKiem.class);
+            startActivity(intent);
+        });
+
         //them
         fab_them = (FloatingActionButton) findViewById(R.id.fAddBtn) ;
         fab_them.setOnClickListener(new View.OnClickListener() {
@@ -94,13 +101,6 @@ public class MainActivity extends AppCompatActivity {
 
         LoadStudents();
 
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
     }
 
     @Override
