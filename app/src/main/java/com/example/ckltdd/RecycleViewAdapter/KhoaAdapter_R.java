@@ -11,9 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ckltdd.Fragment.QLSinhVien;
 import com.example.ckltdd.HandleLoadEmtpy;
 import com.example.ckltdd.Khoa;
-import com.example.ckltdd.MainActivity;
 import com.example.ckltdd.R;
 import com.example.ckltdd.Retrofit2.APIServices;
 import com.example.ckltdd.SinhVien;
@@ -114,13 +114,13 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
         holder.khoaBtn.setOnClickListener(view -> {
             selected = khoa.getId();
             notifyDataSetChanged();
-            MainActivity.khoaId = selected;
-            MainActivity.nganhId = 0;
-            MainActivity.lopId = 0;
-            MainActivity.nganhLoc = "";
-            MainActivity.lopLoc = "";
+            QLSinhVien.khoaId = selected;
+            QLSinhVien.nganhId = 0;
+            QLSinhVien.lopId = 0;
+            QLSinhVien.nganhLoc = "";
+            QLSinhVien.lopLoc = "";
             changeListStudents(khoa.getId());
-            if (MainActivity.khoaId == 0) txtLop.setText("");
+            if (QLSinhVien.khoaId == 0) txtLop.setText("");
             else txtLop.setText("Tất cả");
         });
     }

@@ -24,8 +24,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.ckltdd.Fragment.QLSinhVien;
 import com.example.ckltdd.RecycleViewAdapter.KhoaAdapter_R;
 import com.example.ckltdd.Retrofit2.APIUtils;
 
@@ -44,6 +46,7 @@ import retrofit2.Response;
 
 public class sinhVienAdapter extends BaseAdapter {
     private Context context;
+    private Fragment fragment;
     private int layout;
     private List<SinhVien> sinhVienList;
     private int REQUEST_CODE_EDIT = 112;
@@ -58,6 +61,14 @@ public class sinhVienAdapter extends BaseAdapter {
 
     public void setKhoaAdapter_r(KhoaAdapter_R khoaAdapter_r) {
         this.khoaAdapter_r = khoaAdapter_r;
+    }
+
+    public Fragment getFragment() {
+        return fragment;
+    }
+
+    public void setFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     public CardView getCard_notification() {
@@ -160,7 +171,7 @@ public class sinhVienAdapter extends BaseAdapter {
         btnSua.setOnClickListener(view -> {
             Intent intent = new Intent(context, sua.class);
             intent.putExtra("idSV", sinhvien.getId());
-            ((Activity) context).startActivityForResult(intent,REQUEST_CODE_EDIT);
+            fragment.startActivityForResult(intent,REQUEST_CODE_EDIT);
         });
 
         btnXoa.setOnClickListener(view -> {
@@ -190,9 +201,9 @@ public class sinhVienAdapter extends BaseAdapter {
                 call.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        khoaAdapter_r.setSelected(MainActivity.khoaId);
+                        khoaAdapter_r.setSelected(QLSinhVien.khoaId);
                         khoaAdapter_r.notifyDataSetChanged();
-                        LoadStudentsByClassId(MainActivity.khoaId, MainActivity.nganhId, MainActivity.lopId);
+                        LoadStudentsByClassId(QLSinhVien.khoaId, QLSinhVien.nganhId, QLSinhVien.lopId);
 
                         notification.setText("Xóa thành công!");
                         notification.setBackgroundColor(Color.parseColor("#6CD06A"));
