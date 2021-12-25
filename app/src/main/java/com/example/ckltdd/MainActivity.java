@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.example.ckltdd.Fragment.QLKhoa;
+import com.example.ckltdd.Fragment.QLNganh;
 import com.example.ckltdd.Fragment.QLSinhVien;
 import com.google.android.material.navigation.NavigationView;
 
@@ -70,6 +71,20 @@ public class MainActivity extends AppCompatActivity {
                             if (FRAGMENT_QLSV != currentFragment) {
                                 replaceFragment(new QLSinhVien());
                                 currentFragment = FRAGMENT_QLSV;
+                            }
+                        }
+
+                        if (id == R.id.nav_nganh) {
+                            if (FRAGMENT_QLN != currentFragment) {
+                                replaceFragment(new QLNganh());
+                                currentFragment = FRAGMENT_QLN;
+                            }
+                        }
+
+                        if (id == R.id.nav_lop) {
+                            if (FRAGMENT_QLL != currentFragment) {
+                                replaceFragment(new QLNganh());
+                                currentFragment = FRAGMENT_QLL;
                             }
                         }
 

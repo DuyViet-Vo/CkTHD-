@@ -12,7 +12,7 @@
     android:clickable="true"
     android:background="@drawable/ripple_btn"
     android:paddingHorizontal="26dp"
-    android:paddingVertical="8dp">
+    android:paddingVertical="12dp">
 
     <TextView
         android:id="@+id/tv_ten"
