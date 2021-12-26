@@ -462,7 +462,7 @@ public class Them extends AppCompatActivity {
                         if (khoa.getId() != 0) {
                             LoadDSNGanhByKhoaId(khoa.getId());
                             danhsachnganh.setEnabled(true);
-                            if (tv_nganh.getText().toString().isEmpty())
+                            if (!tv_nganh.getText().toString().isEmpty())
                                 danhsachnganh.setBackground(getResources().getDrawable(R.drawable.bg_spinner_invalid));
                         } else {
                             danhsachlop.setEnabled(false);
@@ -510,7 +510,7 @@ public class Them extends AppCompatActivity {
                 Nganh nganh = (Nganh) adapterView.getItemAtPosition(i);
                 if (nganh.getId() != 0) {
                     danhsachlop.setEnabled(true);
-                    if (tv_lop.getText().toString().isEmpty())
+                    if (!tv_lop.getText().toString().isEmpty())
                         danhsachlop.setBackground(getResources().getDrawable(R.drawable.bg_spinner_invalid));
                     LoadDSLopByNganhId(nganh.getId());
                 } else {

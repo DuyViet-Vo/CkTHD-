@@ -4,9 +4,11 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.ckltdd.Fragment.QLSinhVien;
 import com.example.ckltdd.HandleLoadEmtpy;
 import com.example.ckltdd.Khoa;
+import com.example.ckltdd.Lop;
 import com.example.ckltdd.Nganh;
 import com.example.ckltdd.R;
 import com.example.ckltdd.Retrofit2.APIServices;
@@ -36,6 +39,9 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
     private APIServices mAPIService;
     private sinhVienAdapter svAdapter;
     private QLNganhAdapter_R qlNganhAdapter_r;
+    private QLLopAdapter_R qlLopAdapter_r;
+    private ArrayAdapter<Nganh> nganhSpinnerAdapter;
+    private Spinner nganhSpinner;
     private HandleLoadEmtpy handleLoadEmtpy;
     private TextView txtLop;
 
@@ -44,8 +50,32 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
         selected = listKhoa.get(0).getId();
     }
 
+    public ArrayAdapter<Nganh> getNganhSpinnerAdapter() {
+        return nganhSpinnerAdapter;
+    }
+
+    public Spinner getNganhSpinner() {
+        return nganhSpinner;
+    }
+
+    public void setNganhSpinner(Spinner nganhSpinner) {
+        this.nganhSpinner = nganhSpinner;
+    }
+
+    public void setNganhSpinnerAdapter(ArrayAdapter<Nganh> nganhSpinnerAdapter) {
+        this.nganhSpinnerAdapter = nganhSpinnerAdapter;
+    }
+
     public QLNganhAdapter_R getQlNganhAdapter_r() {
         return qlNganhAdapter_r;
+    }
+
+    public QLLopAdapter_R getQlLopAdapter_r() {
+        return qlLopAdapter_r;
+    }
+
+    public void setQlLopAdapter_r(QLLopAdapter_R qlLopAdapter_r) {
+        this.qlLopAdapter_r = qlLopAdapter_r;
     }
 
     public void setQlNganhAdapter_r(QLNganhAdapter_R qlNganhAdapter_r) {
@@ -141,6 +171,12 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
             if (qlNganhAdapter_r != null) {
                 LoadDSNGanhByKhoaId(khoa.getId());
             }
+
+            if(qlLopAdapter_r != null) {
+                LoadDSLopByKhoaId(khoa.getId());
+                LoadDSNGanhByKhoaId_spinner(khoa.getId());
+
+            }
         });
     }
 
@@ -182,6 +218,47 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
             @Override
             public void onFailure(Call<ArrayList<Nganh>> call, Throwable t) {
 
+            }
+        });
+    }
+
+    private void LoadDSNGanhByKhoaId_spinner(int khoaId) {
+        Call<ArrayList<Nganh>> call = mAPIService.LoadDSNganhByKhoaId(khoaId);
+        call.enqueue(new Callback<ArrayList<Nganh>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Nganh>> call, Response<ArrayList<Nganh>> response) {
+                ArrayList<Nganh> list = response.body();
+                list.add(0, new Nganh( 0,"Chọn ngành"));
+                nganhSpinnerAdapter.clear();
+                nganhSpinnerAdapter.addAll(list);
+                nganhSpinner.setSelection(0);
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Nganh>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void LoadDSLopByKhoaId(int khoaId) {
+        handleLoadEmtpy.empty(1);
+        handleLoadEmtpy.HandleLoadAnimation_r(true);
+        Call<ArrayList<Lop>> call = mAPIService.LoadDSLopByKhoaId(khoaId);
+        call.enqueue(new Callback<ArrayList<Lop>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Lop>> call, Response<ArrayList<Lop>> response) {
+                ArrayList<Lop> list = response.body();
+                qlLopAdapter_r.setListLop(list);
+                qlLopAdapter_r.notifyDataSetChanged();
+                handleLoadEmtpy.HandleLoadAnimation_r(false);
+                handleLoadEmtpy.empty(list.size());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Lop>> call, Throwable t) {
+                System.out.println(t.getMessage());
             }
         });
     }

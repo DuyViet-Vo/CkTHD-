@@ -22,9 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ckltdd.Fragment.QLKhoa;
+import com.example.ckltdd.Fragment.QLLop;
 import com.example.ckltdd.Fragment.QLNganh;
 import com.example.ckltdd.HandleLoadEmtpy;
 import com.example.ckltdd.Khoa;
+import com.example.ckltdd.Lop;
 import com.example.ckltdd.Nganh;
 import com.example.ckltdd.R;
 import com.example.ckltdd.Retrofit2.APIUtils;
@@ -37,11 +39,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNganhHolder>{
-    private List<Nganh> listNganh;
+public class QLLopAdapter_R extends RecyclerView.Adapter<QLLopAdapter_R.QLLopHolder>{
+    private List<Lop> listLop;
     private Context context;
     private KhoaAdapter_R khoaAdapter_r;
     private HandleLoadEmtpy handleLoadEmtpy;
+    private Spinner nganhSpinner;
+    private boolean firstTime = true;
 
     public KhoaAdapter_R getKhoaAdapter_r() {
         return khoaAdapter_r;
@@ -55,47 +59,55 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
         this.handleLoadEmtpy = handleLoadEmtpy;
     }
 
+    public Spinner getNganhSpinner() {
+        return nganhSpinner;
+    }
+
+    public void setNganhSpinner(Spinner nganhSpinner) {
+        this.nganhSpinner = nganhSpinner;
+    }
+
     public void setKhoaAdapter_r(KhoaAdapter_R khoaAdapter_r) {
         this.khoaAdapter_r = khoaAdapter_r;
     }
 
-    public QLNganhAdapter_R(List<Nganh> listNganh) {
-        this.listNganh = listNganh;
+    public QLLopAdapter_R(List<Lop> listLop) {
+        this.listLop = listLop;
     }
 
-    public QLNganhAdapter_R(List<Nganh> listNganh, Context context) {
-        this.listNganh = listNganh;
+    public QLLopAdapter_R(List<Lop> listLop, Context context) {
+        this.listLop = listLop;
         this.context = context;
     }
 
-    public List<Nganh> getListNganh() {
-        return listNganh;
+    public List<Lop> getListLop() {
+        return listLop;
     }
 
-    public void setListNganh(List<Nganh> listNganh) {
-        this.listNganh = listNganh;
+    public void setListLop(List<Lop> listLop) {
+        this.listLop = listLop;
     }
 
     @NonNull
     @Override
-    public QLNganhHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public QLLopHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ql_khoa, parent,false);
-        return new QLNganhHolder(view);
+        return new QLLopHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull QLNganhHolder holder, int position) {
-        Nganh nganh = listNganh.get(position);
-        if(nganh == null)
+    public void onBindViewHolder(@NonNull QLLopHolder holder, int position) {
+        Lop lop = listLop.get(position);
+        if(lop == null)
             return;
 
-        holder.tv_ten.setText(nganh.getTenNganh());
+        holder.tv_ten.setText(lop.getTenLop());
 
         holder.btnSua.setOnClickListener(view -> {
 
             Dialog sua = new Dialog(context);
             sua.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            sua.setContentView(R.layout.dialog_them_nganh);
+            sua.setContentView(R.layout.dialog_them_lop);
 
             Window window = sua.getWindow();
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
@@ -108,32 +120,37 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
             sua.show();
 
             Spinner danhsachkhoa = sua.findViewById(R.id.spinnerkhoa);
+            Spinner danhsachnganh = sua.findViewById(R.id.spinnernganh);
             EditText them_input = sua.findViewById(R.id.them_input);
             TextView valid_ten = sua.findViewById(R.id.valid_ten),
-                    valid_khoa = sua.findViewById(R.id.valid_khoa);
+                    valid_khoa = sua.findViewById(R.id.valid_khoa),
+                    valid_nganh = sua.findViewById(R.id.valid_nganh);
             Button btnHuy = sua.findViewById(R.id.btnHuy),
-                    btnThem = sua.findViewById((R.id.btnThem));
+                    btnSua = sua.findViewById((R.id.btnThem));
 
-            them_input.setText(nganh.getTenNganh());
-            btnThem.setText("Cập nhật");
-            initKhoaSpinner(danhsachkhoa, nganh.getMaKhoa());
+            btnSua.setText("Cập nhật");
+            them_input.setText(lop.getTenLop());
+
+            initNganhSpinner(danhsachnganh);
+            initKhoaSpinner(danhsachkhoa, danhsachnganh, valid_nganh, lop.getMaKhoa(), lop.getMaNganh());
 
             btnHuy.setOnClickListener(view1 -> {
                 sua.cancel();
             });
 
-            btnThem.setOnClickListener(view1 -> {
+            btnSua.setOnClickListener(view1 -> {
                 String err1 = ValidData.IsEmpty(them_input.getText().toString());
-                String err2 = ValidData.IsSpinnerEmpty(QLNganh.khoaSelected);
+                String err2 = ValidData.IsSpinnerEmpty(QLLop.khoaSelected);
+                String err3 = ValidData.IsSpinnerEmpty(QLLop.nganhSelected);
                 ValidAction(them_input, valid_ten, err1);
                 ValidAction(danhsachkhoa, valid_khoa, err2);
+                ValidAction(danhsachnganh, valid_nganh, err3);
 
-                if (!err1.isEmpty() || !err2.isEmpty()) return;
+                if (!err1.isEmpty() || !err2.isEmpty() || !err3.isEmpty()) return;
 
-                nganh.setTenNganh(them_input.getText().toString());
-                nganh.setMaKhoa(QLNganh.khoaSelected);
-
-                Update(nganh, sua);
+                lop.setTenLop(them_input.getText().toString());
+                lop.setMaNganh(QLLop.nganhSelected);
+                Update(lop, sua);
             });
         });
 
@@ -160,10 +177,10 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
             });
 
             xoaBtn.setOnClickListener(view1 -> {
-                listNganh.remove(nganh);
+                listLop.remove(lop);
                 notifyDataSetChanged();
-                QLNganh.notification.Notify("Xoá thành công!", "success");
-                Call<Integer> call = APIUtils.getAPIService().DeleteNganh(nganh.getId());
+                QLLop.notification.Notify("Xoá thành công!", "success");
+                Call<Integer> call = APIUtils.getAPIService().DeleteLop(lop.getId());
                 call.enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
@@ -179,19 +196,26 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
         });
     }
 
-    private void Update(Nganh nganh, Dialog dialog) {
-        Call<Nganh> call = APIUtils.getAPIService().UpdateNganh(nganh);
-        call.enqueue(new Callback<Nganh>() {
+    private void Update(Lop lop, Dialog dialog) {
+        Call<Lop> call = APIUtils.getAPIService().UpdateLop(lop);
+        call.enqueue(new Callback<Lop>() {
             @Override
-            public void onResponse(Call<Nganh> call, Response<Nganh> response) {
-                LoadDSNGanhByKhoaId2(QLNganh.khoaSelected);
-                QLNganh.notification.Notify("Sửa thành công!", "success");
-                khoaAdapter_r.setSelected(QLNganh.khoaSelected);
+            public void onResponse(Call<Lop> call, Response<Lop> response) {
+                LoadDSLopByNganhId_2(lop.getMaNganh());
+                QLLop.notification.Notify("Sửa thành công!", "success");
+                khoaAdapter_r.setSelected(QLLop.khoaSelected);
                 khoaAdapter_r.notifyDataSetChanged();
+
+                ArrayAdapter<Nganh> arrayAdapter = (ArrayAdapter<Nganh>) nganhSpinner.getAdapter();
+
+                for (int j = 0; j < arrayAdapter.getCount(); j ++) {
+                    if(arrayAdapter.getItem(j).getId() == lop.getMaNganh())
+                        nganhSpinner.setSelection(j);
+                }
             }
 
             @Override
-            public void onFailure(Call<Nganh> call, Throwable t) {
+            public void onFailure(Call<Lop> call, Throwable t) {
                 System.out.println(t.getMessage());
             }
         });
@@ -222,7 +246,7 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
         textView.setText("");
     }
 
-    private void initKhoaSpinner(Spinner danhsachkhoa, int id) {
+    private void initKhoaSpinner(Spinner danhsachkhoa, Spinner danhsachnganh, TextView tv_nganh, int id, int idNganh) {
         ArrayList<Khoa> list = new ArrayList<>();
         list.add(0, new Khoa( 0,"Chọn khoa"));
         ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(context, R.layout.item_boloc_dialog, list);
@@ -234,19 +258,41 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
             public void onResponse(Call<List<Khoa>> call, Response<List<Khoa>> response) {
                 ArrayList<Khoa> list = (ArrayList<Khoa>) response.body();
                 list.add(0, new Khoa( 0,"Chọn khoa"));
-                ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(context, R.layout.item_boloc, list);
-                danhsachkhoa.setAdapter(arrayAdapter);
+
+                arrayAdapter.clear();
+                arrayAdapter.addAll(list);
 
                 for (int j = 0; j < arrayAdapter.getCount(); j ++) {
                     if(arrayAdapter.getItem(j).getId() == id)
                         danhsachkhoa.setSelection(j);
-
                 }
+
                 danhsachkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         Khoa khoa = (Khoa) adapterView.getItemAtPosition(i);
-                        QLNganh.khoaSelected = khoa.getId();
+                        QLLop.khoaSelected = khoa.getId();
+
+                        if (khoa.getId() != 0) {
+                            if (firstTime)  {
+                                LoadDSNGanhByKhoaId(id, danhsachnganh, idNganh, true);
+                                firstTime = false;
+                            }
+                            else LoadDSNGanhByKhoaId(khoa.getId(), danhsachnganh, 0, false);
+                            danhsachnganh.setEnabled(true);
+                            if (!tv_nganh.getText().toString().isEmpty())
+                                danhsachnganh.setBackground(context.getResources().getDrawable(R.drawable.bg_spinner_invalid));
+                            else
+                                danhsachnganh.setBackground(context.getResources().getDrawable(R.drawable.bg_spinner));
+                        } else {
+                            danhsachnganh.setEnabled(false);
+                            if (tv_nganh.getText().toString().isEmpty())
+                                danhsachnganh.setBackground(context.getResources().getDrawable(R.drawable.bg_spinner_disabled));
+                            else
+                                danhsachnganh.setBackground(context.getResources().getDrawable(R.drawable.bg_spinner_disabled_invalid));
+                        }
+
+                        if (!firstTime) danhsachnganh.setSelection(0, true);
                     }
 
                     @Override
@@ -263,18 +309,23 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
         });
     }
 
-    private void LoadDSNGanhByKhoaId2(int khoaId) {
-        handleLoadEmtpy.empty(1);
-        handleLoadEmtpy.HandleLoadAnimation_r(true);
+    private void LoadDSNGanhByKhoaId(int khoaId, Spinner danhsachnganh, int id, boolean isInit) {
         Call<ArrayList<Nganh>> call = APIUtils.getAPIService().LoadDSNganhByKhoaId(khoaId);
         call.enqueue(new Callback<ArrayList<Nganh>>() {
             @Override
             public void onResponse(Call<ArrayList<Nganh>> call, Response<ArrayList<Nganh>> response) {
-                List<Nganh> list = response.body();
-                setListNganh(list);
-                notifyDataSetChanged();
-                handleLoadEmtpy.HandleLoadAnimation_r(false);
-                handleLoadEmtpy.empty(list.size());
+                ArrayList<Nganh> list = response.body();
+                list.add(0, new Nganh( 0,"Chọn ngành"));
+                ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter<>(context, R.layout.item_boloc_dialog, list);
+                danhsachnganh.setAdapter(arrayAdapter);
+
+                if(isInit) {
+                    for (int j = 0; j < arrayAdapter.getCount(); j ++) {
+                        if(arrayAdapter.getItem(j).getId() == id)
+                            danhsachnganh.setSelection(j);
+
+                    }
+                }
             }
 
             @Override
@@ -284,19 +335,62 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
         });
     }
 
+    private void initNganhSpinner(Spinner danhsachnganh) {
+        ArrayList<Nganh> list = new ArrayList<>();
+        list.add(0, new Nganh( 0,"Chọn Ngành"));
+
+        ArrayAdapter<Nganh> arrayAdapter = new ArrayAdapter(context, R.layout.item_boloc_dialog, list);
+        danhsachnganh.setEnabled(false);
+        danhsachnganh.setAdapter(arrayAdapter);
+        danhsachnganh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Nganh nganh = (Nganh) adapterView.getItemAtPosition(i);
+                QLLop.nganhSelected = nganh.getId();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void LoadDSLopByNganhId_2(int id) {
+        handleLoadEmtpy.empty(1);
+        handleLoadEmtpy.HandleLoadAnimation_r(true);
+        Call<ArrayList<Lop>> call = APIUtils.getAPIService().LoadDSLopByNganhId(id);
+        call.enqueue(new Callback<ArrayList<Lop>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Lop>> call, Response<ArrayList<Lop>> response) {
+                ArrayList<Lop> list = response.body();
+
+                setListLop(list);
+                notifyDataSetChanged();
+                handleLoadEmtpy.HandleLoadAnimation_r(false);
+                handleLoadEmtpy.empty(list.size());
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Lop>> call, Throwable t) {
+                System.out.println(t.getMessage());
+            }
+        });
+    }
+
     @Override
     public int getItemCount() {
-        if(listNganh != null) {
-            return listNganh.size();
+        if(listLop != null) {
+            return listLop.size();
         }
         return 0;
     }
 
-    public class QLNganhHolder extends RecyclerView.ViewHolder {
+    public class QLLopHolder extends RecyclerView.ViewHolder {
         private TextView tv_ten;
         private ImageButton btnSua, btnXoa;
 
-        public QLNganhHolder(@NonNull View itemView) {
+        public QLLopHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_ten = itemView.findViewById(R.id.tv_ten);

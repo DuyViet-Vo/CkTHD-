@@ -1,7 +1,7 @@
 package com.example.ckltdd;
 
 public class Lop {
-    private int id, maNganh;
+    private int id, maNganh, maKhoa;
     private String tenLop;
 
     public Lop(int id, int maNganh, String tenLop) {
@@ -10,9 +10,28 @@ public class Lop {
         this.tenLop = tenLop;
     }
 
+    public Lop(int id, int maNganh, int maKhoa, String tenLop) {
+        this.id = id;
+        this.maNganh = maNganh;
+        this.maKhoa = maKhoa;
+        this.tenLop = tenLop;
+    }
+
+    public Lop(String tenLop) {
+        this.tenLop = tenLop;
+    }
+
     public Lop(int id, String tenLop) {
         this.id = id;
         this.tenLop = tenLop;
+    }
+
+    public int getMaKhoa() {
+        return maKhoa;
+    }
+
+    public void setMaKhoa(int maKhoa) {
+        this.maKhoa = maKhoa;
     }
 
     public int getId() {

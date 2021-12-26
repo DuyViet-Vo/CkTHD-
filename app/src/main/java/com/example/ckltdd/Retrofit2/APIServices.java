@@ -81,4 +81,14 @@ public interface APIServices {
 
     @POST("nganh/delete")
     Call<Integer> DeleteNganh(@Query("id") int id);
+
+    @POST("lop/insert")
+    Call<Lop> InsertLop(@Body Lop lop);
+
+    @POST("lop/update")
+    Call<Lop> UpdateLop(@Body Lop lop);
+
+    @POST("lop/delete")
+    Call<Integer> DeleteLop(@Query("id") int id);
 }
+
