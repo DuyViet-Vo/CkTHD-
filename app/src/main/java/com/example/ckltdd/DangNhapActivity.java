@@ -72,6 +72,7 @@ public class DangNhapActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Admin> call, Throwable t) {
                 Toast.makeText(DangNhapActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(t.getMessage());
             }
         });
     }

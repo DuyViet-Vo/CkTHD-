@@ -23,15 +23,6 @@
             android:name=".sua"
             android:exported="true" />
         <activity
-            android:name=".QLKhoaActivity"
-            android:exported="true" />
-        <activity
-            android:name=".QLNganhActivity"
-            android:exported="true" />
-        <activity
-            android:name=".QLLop"
-            android:exported="true" />
-        <activity
             android:name=".Them"
             android:exported="true" />
         <activity
