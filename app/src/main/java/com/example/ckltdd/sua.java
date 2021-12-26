@@ -422,7 +422,7 @@ public class sua extends AppCompatActivity {
                 for (int j = 0; j < arrayAdapter.getCount(); j ++) {
                     if(arrayAdapter.getItem(j).getId() == khoaSelected)
                         danhsachkhoa.setSelection(j);
-                    System.out.println(arrayAdapter.getItem(j));
+
                 }
 
                 danhsachkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -515,7 +515,7 @@ public class sua extends AppCompatActivity {
                 for (int j = 0; j < arrayAdapter.getCount(); j ++) {
                     if(arrayAdapter.getItem(j).getId() == nganhSelected)
                         danhsachnganh.setSelection(j);
-                    System.out.println(arrayAdapter.getItem(j));
+
                 }
             }
 

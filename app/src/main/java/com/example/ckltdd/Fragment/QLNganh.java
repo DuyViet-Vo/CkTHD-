@@ -135,7 +135,7 @@ public class QLNganh extends Fragment {
     private void initKhoaSpinner(Spinner danhsachkhoa) {
         ArrayList<Khoa> list = new ArrayList<>();
         list.add(0, new Khoa( 0,"Chọn khoa"));
-        ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(getContext(), R.layout.item_boloc, list);
+        ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(getContext(), R.layout.item_boloc_dialog, list);
         danhsachkhoa.setAdapter(arrayAdapter);
 
         Call<List<Khoa>> call = mAPIService.LoadDSKhoa();
@@ -145,7 +145,7 @@ public class QLNganh extends Fragment {
                 ArrayList<Khoa> list = (ArrayList<Khoa>) response.body();
                 list.add(0, new Khoa( 0,"Chọn khoa"));
 
-                ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(getContext(), R.layout.item_boloc, list);
+                ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(getContext(), R.layout.item_boloc_dialog, list);
                 danhsachkhoa.setAdapter(arrayAdapter);
                 danhsachkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -219,6 +219,8 @@ public class QLNganh extends Fragment {
                 khoaAdapter_r.setSelected(khoaSelected);
                 khoaAdapter_r.notifyDataSetChanged();
                 notification.Notify("Thêm thành công!", "success");
+
+                khoaSelected = 0;
             }
 
             @Override

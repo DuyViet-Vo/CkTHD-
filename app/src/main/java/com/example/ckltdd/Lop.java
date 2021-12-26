@@ -17,6 +17,10 @@ public class Lop {
         this.tenLop = tenLop;
     }
 
+    public Lop(String tenLop) {
+        this.tenLop = tenLop;
+    }
+
     public Lop(int id, String tenLop) {
         this.id = id;
         this.tenLop = tenLop;

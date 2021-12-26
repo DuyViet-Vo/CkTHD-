@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
     private QLNganhAdapter_R qlNganhAdapter_r;
     private QLLopAdapter_R qlLopAdapter_r;
     private ArrayAdapter<Nganh> nganhSpinnerAdapter;
+    private Spinner nganhSpinner;
     private HandleLoadEmtpy handleLoadEmtpy;
     private TextView txtLop;
 
@@ -50,6 +52,14 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
 
     public ArrayAdapter<Nganh> getNganhSpinnerAdapter() {
         return nganhSpinnerAdapter;
+    }
+
+    public Spinner getNganhSpinner() {
+        return nganhSpinner;
+    }
+
+    public void setNganhSpinner(Spinner nganhSpinner) {
+        this.nganhSpinner = nganhSpinner;
     }
 
     public void setNganhSpinnerAdapter(ArrayAdapter<Nganh> nganhSpinnerAdapter) {
@@ -165,6 +175,7 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
             if(qlLopAdapter_r != null) {
                 LoadDSLopByKhoaId(khoa.getId());
                 LoadDSNGanhByKhoaId_spinner(khoa.getId());
+
             }
         });
     }
@@ -220,6 +231,8 @@ public class KhoaAdapter_R extends RecyclerView.Adapter<KhoaAdapter_R.KhoaHolder
                 list.add(0, new Nganh( 0,"Chọn ngành"));
                 nganhSpinnerAdapter.clear();
                 nganhSpinnerAdapter.addAll(list);
+                nganhSpinner.setSelection(0);
+
             }
 
             @Override

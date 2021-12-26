@@ -225,7 +225,7 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
     private void initKhoaSpinner(Spinner danhsachkhoa, int id) {
         ArrayList<Khoa> list = new ArrayList<>();
         list.add(0, new Khoa( 0,"Chọn khoa"));
-        ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(context, R.layout.item_boloc, list);
+        ArrayAdapter<Khoa> arrayAdapter = new ArrayAdapter(context, R.layout.item_boloc_dialog, list);
         danhsachkhoa.setAdapter(arrayAdapter);
 
         Call<List<Khoa>> call = APIUtils.getAPIService().LoadDSKhoa();
@@ -240,7 +240,7 @@ public class QLNganhAdapter_R extends RecyclerView.Adapter<QLNganhAdapter_R.QLNg
                 for (int j = 0; j < arrayAdapter.getCount(); j ++) {
                     if(arrayAdapter.getItem(j).getId() == id)
                         danhsachkhoa.setSelection(j);
-                    System.out.println(arrayAdapter.getItem(j));
+
                 }
                 danhsachkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
